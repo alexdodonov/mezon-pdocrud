@@ -46,6 +46,7 @@ trait ConnectionTrait
      * Contructing connection to database object
      *
      * @return \Mezon\PdoCrud\PdoCrud connection object wich is no initialized
+     * @codeCoverageIgnore
      */
     protected function constructConnection(): \Mezon\PdoCrud\PdoCrud
     {

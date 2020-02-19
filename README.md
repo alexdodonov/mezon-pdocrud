@@ -1,8 +1,8 @@
 # Database support
-##Intro##
+## Intro
 Mezon built-in classes support varios databases using PDO extension of the PHP language.
 
-##Details##
+## Detail
 The following databases are supported:
 
 - CUBRID
@@ -23,68 +23,68 @@ PDO objects are wrapped with ProCrud class wich will help you to create simple C
 For example:
 
 ```PHP
-$DataConnection = array(
+$dataConnection = [
     'dns' => 'mysql:host=localhost;dbname=testdb' , 
     'user' => 'user' ,
     'password' => 'password'
-);
+];
 
-$CRUD = new PdoCrud();
-$CRUD->connect( $DataConnection );
+$crud = new \Mezon\PdoCrud\PdoCrud();
+$crud->connect( $dataConnection );
 // fetching fields id and title from table test_table where ids are greater than 12
-$Records = $CRUD->select( 'id , title' , 'test_table' , 'id > 12' );
+$records = $crud->select( 'id , title' , 'test_table' , 'id > 12' );
 ```
 
-##Deleting records##
+## Deleting records
 
 Deleting routine is quite simple:
 
 ```PHP
-$CRUD->delete( 
+$crud->delete( 
 	'table_name' , // table name
 	'id > 10' ,    // WHERE statement
 	10             // number of records to delete
 );
 ```
 
-##Inserting records##
+## Inserting records
 
 Inserting routine is also very simple:
 
 ```PHP
-$CRUD->insert( 
+$crud->insert( 
 	'table_name' ,                 // table name
 	array( 'f1' => 1 , f2 => '2' ) // new values for fields f1 and f2
 );
 ```
 
-##Updating records##
+## Updating records
 
 Updating routine is also very simple:
 
 ```PHP
-$CRUD->update( 
+$crud->update( 
 	'table_name' ,                   // table name
 	array( 'f1' => 1 , f2 => '2' ) , // new values for fields f1 and f2
 	'id > 10'                        // WHERE statement
 );
 ```
 
-##Transaction and thread safety##
+## Transaction and thread safety
 
 You can lock tables and work with transactions.
 
 ```PHP
-$CRUD->lock_tables( array( 'table1' , 'table2' ) , array( 'READ' , 'WRITE' ) );
-$CRUD->start_transaction();
+$crud->lock_tables( [ 'table1' , 'table2' ] , [ 'READ' , 'WRITE' ] );
+$crud->start_transaction();
 
 // perform some changes in database
 
 // then commit these changes
-$CRUD->commit();
+$crud->commit();
 
 // or rollback them
-// $CRUD->commit();
+// $crud->commit();
 
-$CRUD->unlock_tables();
+$crud->unlock_tables();
 ```
