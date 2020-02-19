@@ -1,4 +1,4 @@
-# Database support [![Build Status](https://travis-ci.com/alexdodonov/mezon-pdocrud.svg?branch=master)](https://travis-ci.com/alexdodonov/mezon-pdocrud)
+# Database support [![Build Status](https://travis-ci.com/alexdodonov/mezon-pdocrud.svg?branch=master)](https://travis-ci.com/alexdodonov/mezon-pdocrud) [![codecov](https://codecov.io/gh/alexdodonov/mezon-pdocrud/branch/master/graph/badge.svg)](https://codecov.io/gh/alexdodonov/mezon-pdocrud)
 ## Intro
 Mezon built-in classes support varios databases using PDO extension of the PHP language.
 
