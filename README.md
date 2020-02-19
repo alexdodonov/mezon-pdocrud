@@ -75,8 +75,8 @@ $crud->update(
 You can lock tables and work with transactions.
 
 ```PHP
-$crud->lock_tables( [ 'table1' , 'table2' ] , [ 'READ' , 'WRITE' ] );
-$crud->start_transaction();
+$crud->lockTables( [ 'table1' , 'table2' ] , [ 'READ' , 'WRITE' ] );
+$crud->startTransaction();
 
 // perform some changes in database
 
@@ -86,5 +86,5 @@ $crud->commit();
 // or rollback them
 // $crud->commit();
 
-$crud->unlock_tables();
+$crud->unlockTables();
 ```
