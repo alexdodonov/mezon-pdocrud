@@ -54,7 +54,7 @@ Inserting routine is also very simple:
 ```PHP
 $crud->insert( 
 	'table_name' ,                 // table name
-	array( 'f1' => 1 , f2 => '2' ) // new values for fields f1 and f2
+	[ 'f1' => 1 , f2 => '2' ] // new values for fields f1 and f2
 );
 ```
 
@@ -65,7 +65,7 @@ Updating routine is also very simple:
 ```PHP
 $crud->update( 
 	'table_name' ,                   // table name
-	array( 'f1' => 1 , f2 => '2' ) , // new values for fields f1 and f2
+	[ 'f1' => 1 , f2 => '2' ] , // new values for fields f1 and f2
 	'id > 10'                        // WHERE statement
 );
 ```
