@@ -44,6 +44,7 @@ class PdoCrud
      *            Query result
      * @param string $query
      *            SQL Query
+     * @codeCoverageIgnore
      */
     protected function processQueryError($result, string $query)
     {
