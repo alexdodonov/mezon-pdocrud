@@ -13,32 +13,13 @@ class PdoCrudUnitTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
-     * Method returns not setup mock
-     *
-     * @return object PdoCrud not setup mock
-     */
-    protected function getUnsetupPdoMock(): object
-    {
-        $mock = $this->getMockBuilder(\Mezon\PdoCrud\PdoCrud::class)
-            ->setMethods([
-            'query',
-            'processQueryError',
-            'lastInsertId'
-        ])
-            ->setConstructorArgs([])
-            ->getMock();
-
-        return $mock;
-    }
-
-    /**
      * Method returns mock
      *
      * @return object PdoCrud mock
      */
     protected function getPdoMock(): object
     {
-        $mock = $this->getUnsetupPdoMock();
+        $mock = \Mezon\PdoCrud\Tests\Utils::getMock($this);
 
         $mock->expects($this->once())
             ->method('query');
@@ -106,7 +87,7 @@ class PdoCrudUnitTest extends \PHPUnit\Framework\TestCase
     public function testCommit(): void
     {
         // setup
-        $mock = $this->getUnsetupPdoMock();
+        $mock = \Mezon\PdoCrud\Tests\Utils::getMock($this);
 
         $mock->expects($this->exactly(2))
             ->method('query')
@@ -122,7 +103,7 @@ class PdoCrudUnitTest extends \PHPUnit\Framework\TestCase
     public function testStartTransaction(): void
     {
         // setup
-        $mock = $this->getUnsetupPdoMock();
+        $mock = \Mezon\PdoCrud\Tests\Utils::getMock($this);
 
         $mock->expects($this->exactly(2))
             ->method('query')
@@ -166,7 +147,7 @@ class PdoCrudUnitTest extends \PHPUnit\Framework\TestCase
     public function testDelete(): void
     {
         // setup
-        $mock = $this->getUnsetupPdoMock();
+        $mock = \Mezon\PdoCrud\Tests\Utils::getMock($this);
 
         $mock->expects($this->exactly(1))
             ->method('query')
@@ -182,12 +163,41 @@ class PdoCrudUnitTest extends \PHPUnit\Framework\TestCase
     public function testUpdate(): void
     {
         // setup
-        $mock = $this->getUnsetupPdoMock();
+        $mock = \Mezon\PdoCrud\Tests\Utils::getMock($this);
         $mock->expects($this->exactly(1))
             ->method('query')
             ->willReturn(new ResultMock());
 
         // test body and assertions
         $mock->update('som-record', [], '1=1');
+    }
+
+    /**
+     * Testing select method
+     */
+    public function testSelect(): void
+    {
+        // setup
+        $queryResultMock = $this->getMockBuilder('QueryResult')
+            ->setMethods([
+            'fetchAll'
+        ])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $queryResultMock->method('fetchAll')->willReturn([
+            [],
+            []
+        ]);
+
+        $mock = \Mezon\PdoCrud\Tests\Utils::getMock($this);
+        $mock->expects($this->exactly(1))
+            ->method('query')
+            ->willReturn($queryResultMock);
+
+        // test body
+        $result = $mock->select('som-record', '', '1=1');
+
+        // assertions
+        $this->assertCount(2, $result);
     }
 }

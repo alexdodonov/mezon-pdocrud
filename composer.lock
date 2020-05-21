@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "mezon/conf",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alexdodonov/mezon-conf.git",
-                "reference": "3ac7aaea53345d4e08ff255c04739cd71225009a"
+                "reference": "63b9100effd581fb2f3ea9f9e9855254d1bad151"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alexdodonov/mezon-conf/zipball/3ac7aaea53345d4e08ff255c04739cd71225009a",
-                "reference": "3ac7aaea53345d4e08ff255c04739cd71225009a",
+                "url": "https://api.github.com/repos/alexdodonov/mezon-conf/zipball/63b9100effd581fb2f3ea9f9e9855254d1bad151",
+                "reference": "63b9100effd581fb2f3ea9f9e9855254d1bad151",
                 "shasum": ""
             },
             "require": {
@@ -43,7 +43,7 @@
             ],
             "description": "Small conf routine",
             "homepage": "https://github.com/alexdodonov/mezon-conf",
-            "time": "2020-02-17T19:07:09+00:00"
+            "time": "2020-02-24T10:08:55+00:00"
         }
     ],
     "packages-dev": [],
@@ -55,5 +55,6 @@
     "platform": {
         "php": ">=7.2.0"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
