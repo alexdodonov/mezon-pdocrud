@@ -11,6 +11,9 @@ namespace Mezon\PdoCrud;
  * @copyright Copyright (c) 2019, aeon.org
  */
 
+// TODO mark all old methods as deprecated
+// TODO use PHPUnit 8.5 in Travis
+
 /**
  * Class provides simple CRUD operations
  */
@@ -19,8 +22,17 @@ class PdoCrud
 
     /**
      * PDO object
+     *
+     * @var \PDO
      */
-    protected $pdo = false;
+    private $pdo = null;
+
+    /**
+     * PDO statement
+     *
+     * @var \PDOStatement
+     */
+    private $pdoStatement = null;
 
     /**
      * Method connects to the database
@@ -29,7 +41,7 @@ class PdoCrud
      *            Connection settings
      * @codeCoverageIgnore
      */
-    public function connect(array $connnectionData)
+    public function connect(array $connnectionData): void
     {
         // no need to test this single string. assume that PDO developers did it
         $this->pdo = new \PDO($connnectionData['dsn'], $connnectionData['user'], $connnectionData['password']);
@@ -46,13 +58,42 @@ class PdoCrud
      *            SQL Query
      * @codeCoverageIgnore
      */
-    protected function processQueryError($result, string $query)
+    protected function processQueryError($result, string $query): void
     {
         if ($result === false) {
             $errorInfo = $this->pdo->errorInfo();
 
             throw (new \Exception($errorInfo[2] . ' in statement ' . $query));
         }
+    }
+
+    /**
+     * Method sets safe query
+     *
+     * @param string $query
+     *            safe query
+     * @codeCoverageIgnore
+     */
+    public function prepare(string $query): void
+    {
+        $this->pdoStatement = $this->pdo->prepare($query, [
+            \PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY
+        ]);
+    }
+
+    /**
+     * Method executes select query and fetches results
+     *
+     * @param array $data
+     *            query data
+     * @return array query result as an array of objects
+     * @codeCoverageIgnore
+     */
+    public function execSelect(array $data): array
+    {
+        $this->pdoStatement->execute($data);
+
+        return $this->pdoStatement->fetchAll(\PDO::FETCH_OBJ);
     }
 
     /**
@@ -69,6 +110,7 @@ class PdoCrud
      * @param int $limit
      *            Count of records
      * @return array List of records
+     * @deprecated since 2020-06-16
      */
     public function select(
         string $fields,
@@ -93,7 +135,7 @@ class PdoCrud
      *            Inserting record
      * @return string Compiled query string
      */
-    protected function setQuery(array $record): string
+    protected function compileGetQuery(array $record): string
     {
         $setFieldsStatement = [];
 
@@ -119,7 +161,7 @@ class PdoCrud
      *            Inserting records
      * @return string Compiled query string
      */
-    protected function setMultypleQuery(array $records)
+    protected function setMultypleQuery(array $records): string
     {
         $query = '( ' . implode(' , ', array_keys($records[0])) . ' ) VALUES ';
 
@@ -145,9 +187,10 @@ class PdoCrud
      *            Liti for afffecting records
      * @return int Count of updated records
      */
-    public function update(string $tableName, array $record, string $where, int $limit = 10000000)
+    public function update(string $tableName, array $record, string $where, int $limit = 10000000): int
     {
-        $query = 'UPDATE ' . $tableName . ' SET ' . $this->setQuery($record) . ' WHERE ' . $where . ' LIMIT ' . $limit;
+        $query = 'UPDATE ' . $tableName . ' SET ' . $this->compileGetQuery($record) . ' WHERE ' . $where . ' LIMIT ' .
+            $limit;
 
         $result = $this->query($query);
 
@@ -167,7 +210,7 @@ class PdoCrud
      *            Liti for afffecting records
      * @return int Count of deleted records
      */
-    public function delete($tableName, $where, $limit = 10000000)
+    public function delete($tableName, $where, $limit = 10000000): int
     {
         $query = 'DELETE FROM ' . $tableName . ' WHERE ' . $where . ' LIMIT ' . intval($limit);
 
@@ -206,7 +249,7 @@ class PdoCrud
      * @param array $modes
      *            List of lock modes
      */
-    public function lock(array $tables, array $modes)
+    public function lock(array $tables, array $modes): void
     {
         $query = $this->lockQuery($tables, $modes);
 
@@ -218,7 +261,7 @@ class PdoCrud
     /**
      * Method unlocks locked tables
      */
-    public function unlock()
+    public function unlock(): void
     {
         $result = $this->query('UNLOCK TABLES');
 
@@ -228,7 +271,7 @@ class PdoCrud
     /**
      * Method starts transaction
      */
-    public function startTransaction()
+    public function startTransaction(): void
     {
         // setting autocommit off
         $result = $this->query('SET AUTOCOMMIT = 0');
@@ -244,7 +287,7 @@ class PdoCrud
     /**
      * Commiting transaction
      */
-    public function commit()
+    public function commit(): void
     {
         // commit transaction
         $result = $this->query('COMMIT');
@@ -260,7 +303,7 @@ class PdoCrud
     /**
      * Rollback transaction
      */
-    public function rollback()
+    public function rollback(): void
     {
         // rollback transaction
         $result = $this->query('ROLLBACK');
@@ -285,12 +328,12 @@ class PdoCrud
     /**
      * Method returns id of the last inserted record
      *
-     * @return string id of the last inserted record
+     * @return int id of the last inserted record
      */
-    public function lastInsertId()
+    public function lastInsertId(): int
     {
         // @codeCoverageIgnoreStart
-        return $this->pdo->lastInsertId();
+        return (int) $this->pdo->lastInsertId();
         // @codeCoverageIgnoreEnd
     }
 
@@ -305,7 +348,7 @@ class PdoCrud
      */
     public function insert(string $tableName, array $record): int
     {
-        $query = 'INSERT ' . $tableName . ' SET ' . $this->setQuery($record);
+        $query = 'INSERT ' . $tableName . ' SET ' . $this->compileGetQuery($record);
 
         $result = $this->query($query);
 
@@ -323,7 +366,7 @@ class PdoCrud
      *            Inserting records
      * @return int New record's id
      */
-    public function insertMultyple(string $tableName, array $records)
+    public function insertMultyple(string $tableName, array $records): int
     {
         $query = 'INSERT INTO ' . $tableName . ' ' . $this->setMultypleQuery($records) . ';';
 

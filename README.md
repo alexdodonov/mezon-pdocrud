@@ -1,4 +1,6 @@
-# Database support [![Build Status](https://travis-ci.com/alexdodonov/mezon-pdocrud.svg?branch=master)](https://travis-ci.com/alexdodonov/mezon-pdocrud) [![codecov](https://codecov.io/gh/alexdodonov/mezon-pdocrud/branch/master/graph/badge.svg)](https://codecov.io/gh/alexdodonov/mezon-pdocrud)
+# Database support
+[![Build Status](https://travis-ci.com/alexdodonov/mezon-pdocrud.svg?branch=master)](https://travis-ci.com/alexdodonov/mezon-pdocrud) [![codecov](https://codecov.io/gh/alexdodonov/mezon-pdocrud/branch/master/graph/badge.svg)](https://codecov.io/gh/alexdodonov/mezon-pdocrud) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alexdodonov/mezon-pdocrud/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/alexdodonov/mezon-pdocrud/?branch=master)
+
 ## Intro
 Mezon built-in classes support varios databases using PDO extension of the PHP language.
 
@@ -31,8 +33,12 @@ $dataConnection = [
 
 $crud = new \Mezon\PdoCrud\PdoCrud();
 $crud->connect( $dataConnection );
+
 // fetching fields id and title from table test_table where ids are greater than 12
-$records = $crud->select( 'id , title' , 'test_table' , 'id > 12' );
+$crud->prepare('SELECT * FROM test_table WHERE id > :id');
+
+// result stores array of anonimous object
+$result = $crud->execSelect(['id' => '12']);
 ```
 
 ## Deleting records
