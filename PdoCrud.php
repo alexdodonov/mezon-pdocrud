@@ -79,6 +79,11 @@ class PdoCrud
         $this->pdoStatement = $this->pdo->prepare($query, [
             \PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY
         ]);
+
+        if ($this->pdoStatement === false) {
+            $errorInfo = $this->pdo->errorInfo();
+            throw (new \Exception('Query "' . query . '" was not prepared. ' . $errorInfo[2], - 1));
+        }
     }
 
     /**
