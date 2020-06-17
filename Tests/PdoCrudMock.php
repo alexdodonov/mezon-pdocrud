@@ -51,9 +51,11 @@ class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
      *            Liti for afffecting records
      * @return int Count of updated records
      */
-    public function update(string $tableName, array $record, string $where, int $limit = 10000000)
+    public function update(string $tableName, array $record, string $where, int $limit = 10000000): int
     {
         $this->updateWasCalledCounter ++;
+
+        return 1;
     }
 
     /**
@@ -74,8 +76,10 @@ class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
      *            Liti for afffecting records
      * @return int Count of deleted records
      */
-    public function delete($tableName, $where, $limit = 10000000)
+    public function delete($tableName, $where, $limit = 10000000): int
     {
         $this->deleteWasCalledCounter ++;
+
+        return 1;
     }
 }
