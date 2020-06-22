@@ -13,6 +13,18 @@ class PdoCrudUnitTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
+     * Test case setup
+     */
+    public static function setUpBeforeClass(): void
+    {
+        \Mezon\PdoCrud\Tests\Utils::$mockingMethods = [
+            'query',
+            'processQueryError',
+            'lastInsertId'
+        ];
+    }
+
+    /**
      * Method returns mock
      *
      * @return object PdoCrud mock
