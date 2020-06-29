@@ -94,7 +94,7 @@ class PdoCrud
      * @return array query result as an array of objects
      * @codeCoverageIgnore
      */
-    public function execSelect(array $data): array
+    public function execSelect(array $data = []): array
     {
         $this->pdoStatement->execute($data);
 
