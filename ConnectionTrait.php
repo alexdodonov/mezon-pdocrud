@@ -16,11 +16,12 @@ namespace Mezon\PdoCrud;
  */
 trait ConnectionTrait
 {
+
     /**
      * Connection to DB.
      */
-    protected $crud = false;
-    
+    protected static $crud = false;
+
     /**
      * Method validates dsn fields
      *
@@ -32,16 +33,16 @@ trait ConnectionTrait
         if (\Mezon\Conf\Conf::getConfigValue($connectionName . '/dsn') === false) {
             throw (new \Exception($connectionName . '/dsn not set'));
         }
-        
+
         if (\Mezon\Conf\Conf::getConfigValue($connectionName . '/user') === false) {
             throw (new \Exception($connectionName . '/user not set'));
         }
-        
+
         if (\Mezon\Conf\Conf::getConfigValue($connectionName . '/password') === false) {
             throw (new \Exception($connectionName . '/password not set'));
         }
     }
-    
+
     /**
      * Contructing connection to database object
      *
@@ -52,30 +53,42 @@ trait ConnectionTrait
     {
         return new \Mezon\PdoCrud\PdoCrud();
     }
-    
+
     /**
      * Method returns database connection
      *
      * @param string $connectionName
      *            Connectio name
+     * @return mixed connection
      */
     public function getConnection(string $connectionName = 'default-db-connection')
     {
-        if ($this->crud !== false) {
-            return $this->crud;
+        if (self::$crud !== false) {
+            return self::$crud;
         }
 
         $this->validateDsn($connectionName);
 
-        $this->crud = $this->constructConnection();
+        self::$crud = $this->constructConnection();
 
-        $this->crud->connect(
+        self::$crud->connect(
             [
                 'dsn' => \Mezon\Conf\Conf::getConfigValue($connectionName . '/dsn'),
                 'user' => \Mezon\Conf\Conf::getConfigValue($connectionName . '/user'),
                 'password' => \Mezon\Conf\Conf::getConfigValue($connectionName . '/password')
             ]);
 
-        return $this->crud;
+        return self::$crud;
+    }
+
+    /**
+     * Method sets connection
+     *
+     * @param mixed $connection
+     *            - new connection or it's mock
+     */
+    public function setConnection($connection): void
+    {
+        self::$crud = $connection;
     }
 }

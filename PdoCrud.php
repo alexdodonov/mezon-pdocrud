@@ -13,6 +13,7 @@ namespace Mezon\PdoCrud;
 
 // TODO mark all old methods as deprecated
 // TODO use PHPUnit 8.5 in Travis
+// TODO create method for simple getting records count
 
 /**
  * Class provides simple CRUD operations

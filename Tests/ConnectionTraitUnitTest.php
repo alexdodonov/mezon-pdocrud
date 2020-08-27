@@ -1,10 +1,7 @@
 <?php
+namespace Mezon\PdoCrud\Tests;
 
-class TraitClient
-{
-
-    use \Mezon\PdoCrud\ConnectionTrait;
-}
+use Mezon\Conf\Conf;
 
 class ConnectionTraitUnitTest extends \PHPUnit\Framework\TestCase
 {
@@ -38,14 +35,41 @@ class ConnectionTraitUnitTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Method sets dsn
+     * 
+     * @param string $dsn dsn
+     */
+    protected function setDsn(string $dsn):void{
+        Conf::setConfigValue('default-db-connection/dsn', $dsn);
+    }
+
+    /**
+     * Method sets user
+     * 
+     * @param string $user user
+     */
+    protected function setUser(string $user):void{
+        Conf::setConfigValue('default-db-connection/user', $user);
+    }
+
+    /**
+     * Method sets password
+     * 
+     * @param string $password password
+     */
+    protected function setPassword(string $password):void{
+        Conf::setConfigValue('default-db-connection/password', $password);
+    }
+
+    /**
      * Testing insertion method
      */
     public function testGetConnection(): void
     {
         // setupp
-        \Mezon\Conf\Conf::setConfigValue('default-db-connection/dsn', 'dsn');
-        \Mezon\Conf\Conf::setConfigValue('default-db-connection/user', 'user');
-        \Mezon\Conf\Conf::setConfigValue('default-db-connection/password', 'password');
+        $this->setDsn('dsn');
+        $this->setUser('user');
+        $this->setPassword('password');
         $mock = $this->getMock();
 
         $mock->expects($this->once())
@@ -64,9 +88,10 @@ class ConnectionTraitUnitTest extends \PHPUnit\Framework\TestCase
     {
         // setup
         \Mezon\Conf\Conf::deleteConfigValue('default-db-connection/dsn');
-        \Mezon\Conf\Conf::setConfigValue('default-db-connection/user', 'user');
-        \Mezon\Conf\Conf::setConfigValue('default-db-connection/password', 'password');
+        $this->setUser('user');
+        $this->setPassword('password');
         $mock = $this->getMock();
+        $mock->setConnection(false);
 
         // assertions
         $this->expectException(\Exception::class);
@@ -74,17 +99,18 @@ class ConnectionTraitUnitTest extends \PHPUnit\Framework\TestCase
         // test body
         $mock->getConnection();
     }
-    
+
     /**
      * Asserting exception if user is not set
      */
     public function testUserException(): void
     {
         // setup
-        \Mezon\Conf\Conf::setConfigValue('default-db-connection/dsn', 'dsn');
+        $this->setDsn('dsn');
         \Mezon\Conf\Conf::deleteConfigValue('default-db-connection/user');
-        \Mezon\Conf\Conf::setConfigValue('default-db-connection/password', 'password');
+        $this->setPassword('password');
         $mock = $this->getMock();
+        $mock->setConnection(false);
 
         // assertions
         $this->expectException(\Exception::class);
@@ -99,10 +125,11 @@ class ConnectionTraitUnitTest extends \PHPUnit\Framework\TestCase
     public function testPasswordException(): void
     {
         // setup
-        \Mezon\Conf\Conf::setConfigValue('default-db-connection/dsn', 'dsn');
-        \Mezon\Conf\Conf::setConfigValue('default-db-connection/user', 'user');
+        $this->setDsn('dsn');
+        $this->setUser('user');
         \Mezon\Conf\Conf::deleteConfigValue('default-db-connection/password');
         $mock = $this->getMock();
+        $mock->setConnection(false);
 
         // assertions
         $this->expectException(\Exception::class);
