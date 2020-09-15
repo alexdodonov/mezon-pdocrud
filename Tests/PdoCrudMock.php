@@ -82,4 +82,40 @@ class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
 
         return 1;
     }
+
+    /**
+     * Locked tables
+     * 
+     * @var array
+     */
+    public $lockedTables = [];
+
+    /**
+     * Locked tables modes
+     *
+     * @var array
+     */
+    public $lockedTablesModes = [];
+
+    /**
+     * Method locks tables
+     *
+     * @param array $tables
+     *            List of tables
+     * @param array $modes
+     *            List of lock modes
+     */
+    public function lock(array $tables, array $modes): void
+    {
+        $this->lockedTables = $tables;
+        $this->lockedTablesModes = $modes;
+    }
+
+    /**
+     * Method unlocks locked tables
+     */
+    public function unlock(): void
+    {
+        $this->lockedTables = $this->lockedTablesModes = [];
+    }
 }
