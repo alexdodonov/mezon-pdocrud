@@ -1,6 +1,9 @@
 <?php
 namespace Mezon\PdoCrud\Tests;
 
+use PHPUnit\Framework\TestCase;
+use Mezon\PdoCrud\PdoCrud;
+
 /**
  * Utilities for unit-tests
  */
@@ -25,9 +28,9 @@ class Utils
      * @param \PHPUnit\Framework\TestCase $test
      * @return object
      */
-    public static function getMock(\PHPUnit\Framework\TestCase $test): object
+    public static function getMock(TestCase $test): object
     {
-        return $test->getMockBuilder(\Mezon\PdoCrud\PdoCrud::class)
+        return $test->getMockBuilder(PdoCrud::class)
             ->setMethods(self::$mockingMethods)
             ->disableOriginalConstructor()
             ->getMock();

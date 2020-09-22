@@ -1,15 +1,9 @@
 <?php
+namespace Mezon\PdoCrud\Tests;
 
-class ResultMock
-{
+use PHPUnit\Framework\TestCase;
 
-    public function rowCount(): int
-    {
-        return 0;
-    }
-}
-
-class PdoCrudUnitTest extends \PHPUnit\Framework\TestCase
+class PdoCrudUnitTest extends TestCase
 {
 
     /**
@@ -17,7 +11,7 @@ class PdoCrudUnitTest extends \PHPUnit\Framework\TestCase
      */
     public static function setUpBeforeClass(): void
     {
-        \Mezon\PdoCrud\Tests\Utils::$mockingMethods = [
+        Utils::$mockingMethods = [
             'query',
             'processQueryError',
             'lastInsertId'
@@ -31,7 +25,7 @@ class PdoCrudUnitTest extends \PHPUnit\Framework\TestCase
      */
     protected function getPdoMock(): object
     {
-        $mock = \Mezon\PdoCrud\Tests\Utils::getMock($this);
+        $mock = Utils::getMock($this);
 
         $mock->expects($this->once())
             ->method('query');

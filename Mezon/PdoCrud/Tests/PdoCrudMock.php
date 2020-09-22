@@ -4,22 +4,17 @@ namespace Mezon\PdoCrud\Tests;
 class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
 {
 
+    /**
+     * Selected result
+     *
+     * @var array
+     */
     public $selectResult = [];
 
     /**
-     * Getting records
      *
-     * @param string $fields
-     *            List of fields
-     * @param string $tableNames
-     *            List of tables
-     * @param string $where
-     *            Condition
-     * @param int $from
-     *            First record in query
-     * @param int $limit
-     *            Count of records
-     * @return array List of records
+     * {@inheritdoc}
+     * @see \Mezon\PdoCrud\PdoCrud::select()
      */
     public function select(
         string $fields,
@@ -39,17 +34,9 @@ class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
     public $updateWasCalledCounter = 0;
 
     /**
-     * Updating records
      *
-     * @param string $tableName
-     *            Table name
-     * @param array $record
-     *            Updating records
-     * @param string $where
-     *            Condition
-     * @param int $limit
-     *            Liti for afffecting records
-     * @return int Count of updated records
+     * {@inheritdoc}
+     * @see \Mezon\PdoCrud\PdoCrud::update()
      */
     public function update(string $tableName, array $record, string $where, int $limit = 10000000): int
     {
@@ -66,15 +53,9 @@ class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
     public $deleteWasCalledCounter = 0;
 
     /**
-     * Deleting records
      *
-     * @param string $tableName
-     *            Table name
-     * @param string $where
-     *            Condition
-     * @param int $limit
-     *            Liti for afffecting records
-     * @return int Count of deleted records
+     * {@inheritdoc}
+     * @see \Mezon\PdoCrud\PdoCrud::delete()
      */
     public function delete($tableName, $where, $limit = 10000000): int
     {
@@ -85,7 +66,7 @@ class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
 
     /**
      * Locked tables
-     * 
+     *
      * @var array
      */
     public $lockedTables = [];
@@ -98,12 +79,9 @@ class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
     public $lockedTablesModes = [];
 
     /**
-     * Method locks tables
      *
-     * @param array $tables
-     *            List of tables
-     * @param array $modes
-     *            List of lock modes
+     * {@inheritdoc}
+     * @see \Mezon\PdoCrud\PdoCrud::lock()
      */
     public function lock(array $tables, array $modes): void
     {
@@ -112,10 +90,34 @@ class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
     }
 
     /**
-     * Method unlocks locked tables
+     *
+     * {@inheritdoc}
+     * @see \Mezon\PdoCrud\PdoCrud::unlock()
      */
     public function unlock(): void
     {
-        $this->lockedTables = $this->lockedTablesModes = [];
+        // nop
+    }
+
+    public $transactionWasStarted = true;
+
+    /**
+     *
+     * {@inheritdoc}
+     * @see \Mezon\PdoCrud\PdoCrud::startTransaction()
+     */
+    public function startTransaction(): void
+    {
+        $this->transactionWasStarted = true;
+    }
+
+    /**
+     *
+     * {@inheritdoc}
+     * @see \Mezon\PdoCrud\PdoCrud::rollback()
+     */
+    public function rollback(): void
+    {
+        // nop
     }
 }

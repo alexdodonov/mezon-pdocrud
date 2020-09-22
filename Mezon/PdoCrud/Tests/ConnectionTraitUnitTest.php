@@ -2,6 +2,7 @@
 namespace Mezon\PdoCrud\Tests;
 
 use Mezon\Conf\Conf;
+use Mezon\PdoCrud\PdoCrud;
 
 class ConnectionTraitUnitTest extends \PHPUnit\Framework\TestCase
 {
@@ -13,7 +14,7 @@ class ConnectionTraitUnitTest extends \PHPUnit\Framework\TestCase
      */
     protected function getPdoMock(): object
     {
-        return $this->getMockBuilder(\Mezon\PdoCrud\PdoCrud::class)
+        return $this->getMockBuilder(PdoCrud::class)
             ->setMethods([
             'connect'
         ])
@@ -87,7 +88,7 @@ class ConnectionTraitUnitTest extends \PHPUnit\Framework\TestCase
     public function testDsnException(): void
     {
         // setup
-        \Mezon\Conf\Conf::deleteConfigValue('default-db-connection/dsn');
+        Conf::deleteConfigValue('default-db-connection/dsn');
         $this->setUser('user');
         $this->setPassword('password');
         $mock = $this->getMock();
@@ -107,7 +108,7 @@ class ConnectionTraitUnitTest extends \PHPUnit\Framework\TestCase
     {
         // setup
         $this->setDsn('dsn');
-        \Mezon\Conf\Conf::deleteConfigValue('default-db-connection/user');
+        Conf::deleteConfigValue('default-db-connection/user');
         $this->setPassword('password');
         $mock = $this->getMock();
         $mock->setConnection(false);
@@ -127,7 +128,7 @@ class ConnectionTraitUnitTest extends \PHPUnit\Framework\TestCase
         // setup
         $this->setDsn('dsn');
         $this->setUser('user');
-        \Mezon\Conf\Conf::deleteConfigValue('default-db-connection/password');
+        Conf::deleteConfigValue('default-db-connection/password');
         $mock = $this->getMock();
         $mock->setConnection(false);
 

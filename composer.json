@@ -27,7 +27,7 @@
 	"prefer-stable": true,
 	"autoload": {
 		"psr-4": {
-			"Mezon\\PdoCrud\\": ""
+			"Mezon\\PdoCrud\\": "./Mezon/PdoCrud/"
 		}
 	},
 	"scripts": {

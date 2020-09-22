@@ -1,6 +1,8 @@
 <?php
 namespace Mezon\PdoCrud;
 
+use Mezon\Conf\Conf;
+
 /**
  * Class ConnectionTrait
  *
@@ -30,15 +32,15 @@ trait ConnectionTrait
      */
     protected function validateDsn(string $connectionName)
     {
-        if (\Mezon\Conf\Conf::getConfigValue($connectionName . '/dsn') === false) {
+        if (Conf::getConfigValue($connectionName . '/dsn') === false) {
             throw (new \Exception($connectionName . '/dsn not set'));
         }
 
-        if (\Mezon\Conf\Conf::getConfigValue($connectionName . '/user') === false) {
+        if (Conf::getConfigValue($connectionName . '/user') === false) {
             throw (new \Exception($connectionName . '/user not set'));
         }
 
-        if (\Mezon\Conf\Conf::getConfigValue($connectionName . '/password') === false) {
+        if (Conf::getConfigValue($connectionName . '/password') === false) {
             throw (new \Exception($connectionName . '/password not set'));
         }
     }
@@ -46,12 +48,12 @@ trait ConnectionTrait
     /**
      * Contructing connection to database object
      *
-     * @return \Mezon\PdoCrud\PdoCrud connection object wich is no initialized
+     * @return PdoCrud connection object wich is no initialized
      * @codeCoverageIgnore
      */
-    protected function constructConnection(): \Mezon\PdoCrud\PdoCrud
+    protected function constructConnection(): PdoCrud
     {
-        return new \Mezon\PdoCrud\PdoCrud();
+        return new PdoCrud();
     }
 
     /**
@@ -73,9 +75,9 @@ trait ConnectionTrait
 
         self::$crud->connect(
             [
-                'dsn' => \Mezon\Conf\Conf::getConfigValue($connectionName . '/dsn'),
-                'user' => \Mezon\Conf\Conf::getConfigValue($connectionName . '/user'),
-                'password' => \Mezon\Conf\Conf::getConfigValue($connectionName . '/password')
+                'dsn' => Conf::getConfigValue($connectionName . '/dsn'),
+                'user' => Conf::getConfigValue($connectionName . '/user'),
+                'password' => Conf::getConfigValue($connectionName . '/password')
             ]);
 
         return self::$crud;
