@@ -99,6 +99,11 @@ class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
         // nop
     }
 
+    /**
+     * Special flag wich shows that transaction was started
+     *
+     * @var boolean
+     */
     public $transactionWasStarted = true;
 
     /**
@@ -119,5 +124,22 @@ class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
     public function rollback(): void
     {
         // nop
+    }
+
+    /**
+     * Special flag wich shows that commit was performed
+     *
+     * @var boolean
+     */
+    public $commitWasPerformed = false;
+
+    /**
+     *
+     * {@inheritdoc}
+     * @see \Mezon\PdoCrud\PdoCrud::commit()
+     */
+    public function commit(): void
+    {
+        $this->commitWasPerformed = true;
     }
 }
