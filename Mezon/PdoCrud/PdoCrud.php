@@ -89,16 +89,36 @@ class PdoCrud
     /**
      * Method executes select query and fetches results
      *
-     * @param array $data
+     * @param ?array $data
      *            query data
      * @return array query result as an array of objects
      * @codeCoverageIgnore
      */
-    public function execSelect(array $data = []): array
+    public function execSelect(?array $data = null): array
     {
-        $this->pdoStatement->execute($data);
+        if ($this->pdoStatement->execute($data) === false) {
+            $info = $this->pdoStatement->errorInfo();
+
+            throw (new \Exception($info[2], - 1));
+        }
 
         return $this->pdoStatement->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    /**
+     * Method binds parameters to query
+     *
+     * @param string $parameter
+     *            name of the parameter
+     * @param mixed $variable
+     *            value
+     * @param int $type
+     *            parameter type
+     * @codeCoverageIgnore
+     */
+    public function bindParameter(string $parameter, $variable, int $type = \PDO::PARAM_STR): void
+    {
+        $this->pdoStatement->bindParam($parameter, $variable, $type);
     }
 
     /**
