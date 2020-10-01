@@ -27,12 +27,7 @@ class PdoCrud
      */
     private $pdo = null;
 
-    /**
-     * PDO statement
-     *
-     * @var \PDOStatement
-     */
-    private $pdoStatement = null;
+    use PdoCrudStatement;
 
     /**
      * Method connects to the database
@@ -68,25 +63,6 @@ class PdoCrud
     }
 
     /**
-     * Method sets safe query
-     *
-     * @param string $query
-     *            safe query
-     * @codeCoverageIgnore
-     */
-    public function prepare(string $query): void
-    {
-        $this->pdoStatement = $this->pdo->prepare($query, [
-            \PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY
-        ]);
-
-        if ($this->pdoStatement === false) {
-            $errorInfo = $this->pdo->errorInfo();
-            throw (new \Exception('Query "' . query . '" was not prepared. ' . $errorInfo[2], - 1));
-        }
-    }
-
-    /**
      * Method executes select query and fetches results
      *
      * @param ?array $data
@@ -103,22 +79,6 @@ class PdoCrud
         }
 
         return $this->pdoStatement->fetchAll(\PDO::FETCH_OBJ);
-    }
-
-    /**
-     * Method binds parameters to query
-     *
-     * @param string $parameter
-     *            name of the parameter
-     * @param mixed $variable
-     *            value
-     * @param int $type
-     *            parameter type
-     * @codeCoverageIgnore
-     */
-    public function bindParameter(string $parameter, $variable, int $type = \PDO::PARAM_STR): void
-    {
-        $this->pdoStatement->bindParam($parameter, $variable, $type);
     }
 
     /**
