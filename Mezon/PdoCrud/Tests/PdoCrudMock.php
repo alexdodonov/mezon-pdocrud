@@ -1,7 +1,9 @@
 <?php
 namespace Mezon\PdoCrud\Tests;
 
-class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
+use Mezon\PdoCrud\PdoCrud;
+
+class PdoCrudMock extends PdoCrud
 {
 
     /**
@@ -14,7 +16,7 @@ class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
     /**
      *
      * {@inheritdoc}
-     * @see \Mezon\PdoCrud\PdoCrud::select()
+     * @see PdoCrud::select()
      */
     public function select(
         string $fields,
@@ -36,7 +38,7 @@ class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
     /**
      *
      * {@inheritdoc}
-     * @see \Mezon\PdoCrud\PdoCrud::update()
+     * @see PdoCrud::update()
      */
     public function update(string $tableName, array $record, string $where, int $limit = 10000000): int
     {
@@ -55,7 +57,7 @@ class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
     /**
      *
      * {@inheritdoc}
-     * @see \Mezon\PdoCrud\PdoCrud::delete()
+     * @see PdoCrud::delete()
      */
     public function delete($tableName, $where, $limit = 10000000): int
     {
@@ -81,7 +83,7 @@ class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
     /**
      *
      * {@inheritdoc}
-     * @see \Mezon\PdoCrud\PdoCrud::lock()
+     * @see PdoCrud::lock()
      */
     public function lock(array $tables, array $modes): void
     {
@@ -92,7 +94,7 @@ class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
     /**
      *
      * {@inheritdoc}
-     * @see \Mezon\PdoCrud\PdoCrud::unlock()
+     * @see PdoCrud::unlock()
      */
     public function unlock(): void
     {
@@ -109,7 +111,7 @@ class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
     /**
      *
      * {@inheritdoc}
-     * @see \Mezon\PdoCrud\PdoCrud::startTransaction()
+     * @see PdoCrud::startTransaction()
      */
     public function startTransaction(): void
     {
@@ -119,7 +121,7 @@ class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
     /**
      *
      * {@inheritdoc}
-     * @see \Mezon\PdoCrud\PdoCrud::rollback()
+     * @see PdoCrud::rollback()
      */
     public function rollback(): void
     {
@@ -136,10 +138,29 @@ class PdoCrudMock extends \Mezon\PdoCrud\PdoCrud
     /**
      *
      * {@inheritdoc}
-     * @see \Mezon\PdoCrud\PdoCrud::commit()
+     * @see PdoCrud::commit()
      */
     public function commit(): void
     {
         $this->commitWasPerformed = true;
+    }
+
+    /**
+     * Field stores count of insert method was called
+     *
+     * @var integer
+     */
+    public $insertsCounter = 0;
+
+    /**
+     *
+     * {@inheritdoc}
+     * @see PdoCrud::insert()
+     */
+    public function insert(string $tableName, array $record): int
+    {
+        $this->insertsCounter ++;
+
+        return 1;
     }
 }
