@@ -11,9 +11,6 @@ namespace Mezon\PdoCrud;
  * @copyright Copyright (c) 2019, aeon.org
  */
 
-// TODO mark all old methods as deprecated
-// TODO create method for simple getting records count
-
 /**
  * Class provides simple CRUD operations
  */
@@ -63,6 +60,21 @@ class PdoCrud
     }
 
     /**
+     * Method executes SQL query
+     *
+     * @param ?array $data
+     *            query data
+     * @codeCoverageIgnore
+     */
+    public function execute(?array $data = null):void{
+        if ($this->pdoStatement->execute($data) === false) {
+            $info = $this->pdoStatement->errorInfo();
+            
+            throw (new \Exception($info[2], - 1));
+        }
+    }
+    
+    /**
      * Method executes select query and fetches results
      *
      * @param ?array $data
@@ -70,15 +82,41 @@ class PdoCrud
      * @return array query result as an array of objects
      * @codeCoverageIgnore
      */
-    public function execSelect(?array $data = null): array
+    public function executeSelect(?array $data = null): array
     {
-        if ($this->pdoStatement->execute($data) === false) {
-            $info = $this->pdoStatement->errorInfo();
-
-            throw (new \Exception($info[2], - 1));
-        }
+        $this->execute($data);
 
         return $this->pdoStatement->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    /**
+     * 
+     * @param string $fieldName
+     * @return int
+     */
+    public function getRecordsCount(string $fieldName = 'records_count'):int{
+        $records = $this->executeSelect();
+        
+        if(empty($records)){
+            return 0;
+        }
+        else{
+            return $records[0]->$fieldName;
+        }
+    }
+
+    /**
+     * Method executes select query and fetches results
+     *
+     * @param ?array $data
+     *            query data
+     * @return array query result as an array of objects
+     * @codeCoverageIgnore
+     * @deprecated Deprecated since 2020-11-21, use executeSelect
+     */
+    public function execSelect(?array $data = null): array
+    {
+        return $this->executeSelect($data);
     }
 
     /**
@@ -169,8 +207,9 @@ class PdoCrud
      * @param string $where
      *            Condition
      * @param int $limit
-     *            Liti for afffecting records
+     *            Limit for afffecting records
      * @return int Count of updated records
+     * @deprecated Deprecated since 2020-11-21, use execute
      */
     public function update(string $tableName, array $record, string $where, int $limit = 10000000): int
     {
@@ -194,6 +233,7 @@ class PdoCrud
      * @param int $limit
      *            Liti for afffecting records
      * @return int Count of deleted records
+     * @deprecated Deprecated since 2020-11-21, use execute
      */
     public function delete($tableName, $where, $limit = 10000000): int
     {
@@ -330,6 +370,7 @@ class PdoCrud
      * @param array $record
      *            Inserting record
      * @return int New record's id
+     * @deprecated Deprecated since 2020-11-21, use execute
      */
     public function insert(string $tableName, array $record): int
     {
@@ -350,6 +391,7 @@ class PdoCrud
      * @param array $records
      *            Inserting records
      * @return int New record's id
+     * @deprecated Deprecated since 2020-11-21, use execute
      */
     public function insertMultyple(string $tableName, array $records): int
     {
