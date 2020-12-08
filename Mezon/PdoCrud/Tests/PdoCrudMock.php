@@ -36,6 +36,13 @@ class PdoCrudMock extends PdoCrud
     public $updateWasCalledCounter = 0;
 
     /**
+     * Update calls data
+     *
+     * @var array
+     */
+    public $updateCalls = [];
+
+    /**
      *
      * {@inheritdoc}
      * @see PdoCrud::update()
@@ -43,6 +50,13 @@ class PdoCrudMock extends PdoCrud
     public function update(string $tableName, array $record, string $where, int $limit = 10000000): int
     {
         $this->updateWasCalledCounter ++;
+
+        $this->updateCalls[] = [
+            $tableName,
+            $record,
+            $where,
+            $limit
+        ];
 
         return 1;
     }
@@ -150,7 +164,14 @@ class PdoCrudMock extends PdoCrud
      *
      * @var integer
      */
-    public $insertsCounter = 0;
+    public $insertswasCalledCounter = 0;
+
+    /**
+     * Insert calls
+     *
+     * @var array
+     */
+    public $insertCalls = [];
 
     /**
      *
@@ -160,6 +181,11 @@ class PdoCrudMock extends PdoCrud
     public function insert(string $tableName, array $record): int
     {
         $this->insertsCounter ++;
+
+        $this->insertCalls[] = [
+            $tableName,
+            $record
+        ];
 
         return 1;
     }
