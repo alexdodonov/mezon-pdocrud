@@ -164,7 +164,7 @@ class PdoCrudMock extends PdoCrud
      *
      * @var integer
      */
-    public $insertswasCalledCounter = 0;
+    public $insertWasCalledCounter = 0;
 
     /**
      * Insert calls
@@ -180,7 +180,7 @@ class PdoCrudMock extends PdoCrud
      */
     public function insert(string $tableName, array $record): int
     {
-        $this->insertsCounter ++;
+        $this->insertWasCalledCounter ++;
 
         $this->insertCalls[] = [
             $tableName,
