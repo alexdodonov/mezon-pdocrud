@@ -214,6 +214,13 @@ class PdoCrudMock extends PdoCrud
     public $executeSelectWasCalledCounter = 0;
 
     /**
+     * List of return values
+     *
+     * @var array
+     */
+    public $selectResults = [];
+
+    /**
      *
      * {@inheritdoc}
      * @see PdoCrud::executeSelect()
@@ -221,5 +228,13 @@ class PdoCrudMock extends PdoCrud
     public function executeSelect(?array $data = null): array
     {
         $this->executeSelectWasCalledCounter ++;
+
+        $this->selectResults = array_reverse($this->selectResults);
+
+        $return = array_pop();
+
+        $this->selectResults = array_reverse($this->selectResults);
+
+        return $return;
     }
 }
