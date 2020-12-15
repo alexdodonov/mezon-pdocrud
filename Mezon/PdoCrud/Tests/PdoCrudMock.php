@@ -2,6 +2,7 @@
 namespace Mezon\PdoCrud\Tests;
 
 use Mezon\PdoCrud\PdoCrud;
+use Mezon\PdoCrud\PdoCrudStatement;
 
 class PdoCrudMock extends PdoCrud
 {
@@ -188,5 +189,37 @@ class PdoCrudMock extends PdoCrud
         ];
 
         return 1;
+    }
+
+    /**
+     * Prepare statements
+     */
+    public $prepareStatements = [];
+
+    /**
+     *
+     * {@inheritdoc}
+     * @see PdoCrudStatement::insert()
+     */
+    public function prepare(string $query): void
+    {
+        $this->prepareStatements[] = $query;
+    }
+
+    /**
+     * Field stores count of executeSelect method was called
+     *
+     * @var integer
+     */
+    public $executeSelectWasCalledCounter = 0;
+
+    /**
+     *
+     * {@inheritdoc}
+     * @see PdoCrud::executeSelect()
+     */
+    public function executeSelect(?array $data = null): array
+    {
+        $this->executeSelectWasCalledCounter ++;
     }
 }
