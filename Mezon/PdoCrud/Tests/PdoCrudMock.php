@@ -231,10 +231,31 @@ class PdoCrudMock extends PdoCrud
 
         $this->selectResults = array_reverse($this->selectResults);
 
-        $return = array_pop();
+        $return = array_pop($this->selectResults);
 
         $this->selectResults = array_reverse($this->selectResults);
 
         return $return;
+    }
+
+    /**
+     * Binded parameters
+     *
+     * @var array
+     */
+    public $bindedParameters = [];
+
+    /**
+     *
+     * {@inheritdoc}
+     * @see PdoCrud::bindParameter()
+     */
+    public function bindParameter(string $parameter, $variable, int $type = \PDO::PARAM_STR): void
+    {
+        $this->bindedParameters[] = [
+            $parameter,
+            $variable,
+            $type
+        ];
     }
 }
