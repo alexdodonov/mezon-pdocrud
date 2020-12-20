@@ -277,4 +277,21 @@ class PdoCrudMock extends PdoCrud
     {
         $this->executeWasCalledCounter ++;
     }
+
+    /**
+     * Result of the lastInsertId call
+     *
+     * @var integer
+     */
+    public $lastInsertIdResut = 0;
+
+    /**
+     * Method returns id of the last inserted record
+     *
+     * @return int id of the last inserted record
+     */
+    public function lastInsertId(): int
+    {
+        return $this->lastInsertIdResut;
+    }
 }
