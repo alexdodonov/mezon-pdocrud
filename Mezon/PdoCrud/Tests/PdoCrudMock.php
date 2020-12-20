@@ -258,4 +258,23 @@ class PdoCrudMock extends PdoCrud
             $type
         ];
     }
+
+    /**
+     * Field stores count of executet method was called
+     *
+     * @var integer
+     */
+    public $executeWasCalledCounter = 0;
+
+    /**
+     * Method executes SQL query
+     *
+     * @param ?array $data
+     *            query data
+     * @codeCoverageIgnore
+     */
+    public function execute(?array $data = null): void
+    {
+        $this->executeWasCalledCounter ++;
+    }
 }
