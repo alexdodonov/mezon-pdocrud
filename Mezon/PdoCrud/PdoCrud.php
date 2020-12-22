@@ -17,7 +17,6 @@ namespace Mezon\PdoCrud;
 class PdoCrud
 {
 
-    // TODO move PDO to the trait PdoCrudStatement
     /**
      * PDO object
      *
