@@ -193,6 +193,7 @@ class PdoCrud
      */
     public function delete($tableName, $where, $limit = 10000000): int
     {
+        // TODO remove this method, do not forget to up version
         $query = 'DELETE FROM ' . $tableName . ' WHERE ' . $where . ' LIMIT ' . intval($limit);
 
         $result = $this->query($query);
