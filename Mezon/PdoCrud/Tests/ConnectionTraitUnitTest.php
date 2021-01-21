@@ -91,8 +91,7 @@ class ConnectionTraitUnitTest extends TestCase
             ->willReturn($this->getPdoMock());
 
         // test body and assertionss
-        $mock->getConnection(); // creating connection object
-        $mock->getConnection(); // getting created object
+        $mock->getConnection();
     }
 
     /**
@@ -267,5 +266,18 @@ class ConnectionTraitUnitTest extends TestCase
 
         // test body
         $mock->getConnection($connectionName);
+    }
+
+    /**
+     * Testing method cached getConnection
+     */
+    public function testGetConnectionCached(): void
+    {
+        // setup
+        $mock = $this->getMock();
+        $mock->setConnection(new PdoCrudMock());
+
+        // test body and assertions
+        $this->assertInstanceOf(PdoCrudMock::class, $mock->getConnection('some-connection-wich-does-not-exists'));
     }
 }

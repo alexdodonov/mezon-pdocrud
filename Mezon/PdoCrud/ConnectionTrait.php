@@ -83,10 +83,6 @@ trait ConnectionTrait
      */
     private function getConnectionScalar(string $connectionName = 'default-db-connection')
     {
-        if (self::$crud !== false) {
-            return self::$crud;
-        }
-
         $this->validateDsn($connectionName);
 
         self::$crud = $this->constructConnection();
@@ -111,6 +107,10 @@ trait ConnectionTrait
      */
     public function getConnection($connectionName = 'default-db-connection')
     {
+        if (self::$crud !== false) {
+            return self::$crud;
+        }
+
         if (is_string($connectionName)) {
             return $this->getConnectionScalar($connectionName);
         } elseif (is_array($connectionName)) {
