@@ -8,6 +8,25 @@ class PdoCrudMock extends PdoCrud
 {
 
     /**
+     * Was the "connect" method called
+     *
+     * @var boolean
+     */
+    public $connectWasCalled = false;
+
+    /**
+     * Method connects to the database
+     *
+     * @param array $connnectionData
+     *            Connection settings
+     * @codeCoverageIgnore
+     */
+    public function connect(array $connnectionData): void
+    {
+        $this->connectWasCalled = true;
+    }
+
+    /**
      * Selected result
      *
      * @var array

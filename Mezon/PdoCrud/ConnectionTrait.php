@@ -14,7 +14,7 @@ use Mezon\Conf\Conf;
  */
 
 /**
- * Class provides simple CRUD operations
+ * Trait for getting connections
  */
 trait ConnectionTrait
 {

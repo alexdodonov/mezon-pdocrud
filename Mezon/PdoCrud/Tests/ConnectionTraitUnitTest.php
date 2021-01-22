@@ -5,75 +5,8 @@ use Mezon\Conf\Conf;
 use Mezon\PdoCrud\PdoCrud;
 use PHPUnit\Framework\TestCase;
 
-class ConnectionTraitUnitTest extends TestCase
+class ConnectionTraitUnitTest extends ConnectionTraitTests
 {
-
-    /**
-     * Method returns mock
-     *
-     * @return object mock
-     */
-    protected function getPdoMock(): object
-    {
-        return $this->getMockBuilder(PdoCrud::class)
-            ->setMethods([
-            'connect'
-        ])
-            ->getMock();
-    }
-
-    /**
-     * Method returns mock
-     *
-     * @return object mock
-     */
-    protected function getMock(): object
-    {
-        return $this->getMockBuilder(TraitClient::class)
-            ->setMethods([
-            'constructConnection'
-        ])
-            ->getMock();
-    }
-
-    /**
-     * Method sets dsn
-     *
-     * @param string $dsn
-     *            dsn
-     * @param string $connectionName
-     *            connection name
-     */
-    protected function setDsn(string $dsn, string $connectionName = 'default-db-connection'): void
-    {
-        Conf::setConfigValue($connectionName . '/dsn', $dsn);
-    }
-
-    /**
-     * Method sets user
-     *
-     * @param string $user
-     *            user
-     * @param string $connectionName
-     *            connection name
-     */
-    protected function setUser(string $user, string $connectionName = 'default-db-connection'): void
-    {
-        Conf::setConfigValue($connectionName . '/user', $user);
-    }
-
-    /**
-     * Method sets password
-     *
-     * @param string $password
-     *            password
-     * @param string $connectionName
-     *            connection name
-     */
-    protected function setPassword(string $password, string $connectionName = 'default-db-connection'): void
-    {
-        Conf::setConfigValue($connectionName . '/password', $password);
-    }
 
     /**
      * Testing insertion method
@@ -85,6 +18,7 @@ class ConnectionTraitUnitTest extends TestCase
         $this->setUser('user');
         $this->setPassword('password');
         $mock = $this->getMock();
+        $mock->setConnection(false);
 
         $mock->expects($this->once())
             ->method('constructConnection')
@@ -150,19 +84,6 @@ class ConnectionTraitUnitTest extends TestCase
 
         // test body
         $mock->getConnection();
-    }
-
-    /**
-     * Setting connection
-     *
-     * @param string $connectionName
-     *            connection name
-     */
-    private function setConnection(string $connectionName = 'default-db-connection'): void
-    {
-        $this->setDsn('dsn', $connectionName);
-        $this->setUser('user', $connectionName);
-        $this->setPassword('password', $connectionName);
     }
 
     /**
