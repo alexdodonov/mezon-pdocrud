@@ -120,6 +120,7 @@ trait ConnectionTrait
                 }
             }
 
+            // TODO remove srialize and make normal error message
             throw (new \Exception('Connection with name "' . serialize($connectionName) . '" was not found'));
         } else {
             throw (new \Exception('Unsupported type for connection name'));
