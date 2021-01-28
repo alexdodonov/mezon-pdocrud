@@ -29,64 +29,6 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
     }
 
     /**
-     * Asserting exception if dsn is not set
-     */
-    public function testDsnException(): void
-    {
-        // TODO join these tests in one with data provider
-        // setup
-        Conf::deleteConfigValue('default-db-connection/dsn');
-        $this->setUser('user');
-        $this->setPassword('password');
-        $mock = $this->getMock();
-        $mock->setConnection(false);
-
-        // assertions
-        $this->expectException(\Exception::class);
-
-        // test body
-        $mock->getConnection();
-    }
-
-    /**
-     * Asserting exception if user is not set
-     */
-    public function testUserException(): void
-    {
-        // setup
-        $this->setDsn('dsn');
-        Conf::deleteConfigValue('default-db-connection/user');
-        $this->setPassword('password');
-        $mock = $this->getMock();
-        $mock->setConnection(false);
-
-        // assertions
-        $this->expectException(\Exception::class);
-
-        // test body
-        $mock->getConnection();
-    }
-
-    /**
-     * Asserting exception if password is not set
-     */
-    public function testPasswordException(): void
-    {
-        // setup
-        $this->setDsn('dsn');
-        $this->setUser('user');
-        Conf::deleteConfigValue('default-db-connection/password');
-        $mock = $this->getMock();
-        $mock->setConnection(false);
-
-        // assertions
-        $this->expectException(\Exception::class);
-
-        // test body
-        $mock->getConnection();
-    }
-
-    /**
      * Testing data provider
      *
      * @return array testing data
