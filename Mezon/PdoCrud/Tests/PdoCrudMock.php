@@ -313,4 +313,14 @@ class PdoCrudMock extends PdoCrud
     {
         return $this->lastInsertIdResut;
     }
+
+    /**
+     * Method returns count of affected rows
+     *
+     * @return int count of affected rows
+     */
+    public function rowCount(): int
+    {
+        return 1;
+    }
 }
