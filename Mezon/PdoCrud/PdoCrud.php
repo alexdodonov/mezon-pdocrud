@@ -180,30 +180,6 @@ class PdoCrud
     }
 
     /**
-     * Deleting records
-     *
-     * @param string $tableName
-     *            Table name
-     * @param string $where
-     *            Condition
-     * @param int $limit
-     *            Liti for afffecting records
-     * @return int Count of deleted records
-     * @deprecated Deprecated since 2020-11-21, use execute
-     */
-    public function delete($tableName, $where, $limit = 10000000): int
-    {
-        // TODO remove this method, do not forget to up version
-        $query = 'DELETE FROM ' . $tableName . ' WHERE ' . $where . ' LIMIT ' . intval($limit);
-
-        $result = $this->query($query);
-
-        $this->processQueryError($result, $query);
-
-        return $result->rowCount();
-    }
-
-    /**
      * Method compiles lock queries
      *
      * @param array $tables

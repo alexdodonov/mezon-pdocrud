@@ -148,22 +148,6 @@ class PdoCrudUnitTest extends TestCase
     }
 
     /**
-     * Testing delete method
-     */
-    public function testDelete(): void
-    {
-        // setup
-        $mock = \Mezon\PdoCrud\Tests\Utils::getMock($this);
-
-        $mock->expects($this->exactly(1))
-            ->method('query')
-            ->willReturn(new ResultMock());
-
-        // test body and assertions
-        $mock->delete('records', 'id=1');
-    }
-
-    /**
      * Testing update method
      */
     public function testUpdate(): void
