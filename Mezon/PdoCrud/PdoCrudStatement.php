@@ -103,4 +103,15 @@ trait PdoCrudStatement
     {
         return $this->executeSelect($data);
     }
+
+    /**
+     * Method returns count of affected rows
+     *
+     * @return int count of affected rows
+     * @codeCoverageIgnore
+     */
+    public function rowCount(): int
+    {
+        return $this->pdoStatement->rowCount();
+    }
 }
