@@ -110,7 +110,7 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
     /**
      * Testing exception for array type connection name
      *
-     * @param mixed $connectionNAme
+     * @param mixed $connectionName
      *            connection name
      * @dataProvider getConnectionForArrayExceptionDataProvider
      */
