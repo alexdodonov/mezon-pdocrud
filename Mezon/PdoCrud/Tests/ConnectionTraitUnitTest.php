@@ -116,7 +116,6 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
      */
     public function testGetConnectionForArrayException($connectionName): void
     {
-        // TODO add snippet for testing exception with data provider
         // assertions
         $this->expectException(\Exception::class);
 
