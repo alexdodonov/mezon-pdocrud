@@ -35,20 +35,6 @@ class ConnectionTraitTests extends TestCase
         ])
             ->getMock();
     }
-    
-    /**
-     * Method returns mock
-     *
-     * @return object mock
-     */
-    protected function getMockBase(): object
-    {
-        return $this->getMockBuilder(TraitClientBase::class)
-        ->setMethods([
-            'constructConnection'
-        ])
-        ->getMock();
-    }
 
     /**
      * Method sets dsn

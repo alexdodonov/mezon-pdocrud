@@ -15,87 +15,13 @@ use Mezon\Conf\Conf;
 
 /**
  * Trait for getting connections
+ * 
+ * @deprecated since 2021-06-15, use StaticConnectionTrait
  */
 trait ConnectionTrait
 {
 
-    /**
-     * Connection to DB.
-     */
-    protected static $crud = false;
-
-    /**
-     * Method validates dsn fields
-     *
-     * @param string $connectionName
-     *            Connectio name
-     */
-    protected function validateDsn(string $connectionName): void
-    {
-        if (Conf::getConfigValue($connectionName . '/dsn') === false) {
-            throw (new \Exception($connectionName . '/dsn not set'));
-        }
-
-        if (Conf::getConfigValue($connectionName . '/user') === false) {
-            throw (new \Exception($connectionName . '/user not set'));
-        }
-
-        if (Conf::getConfigValue($connectionName . '/password') === false) {
-            throw (new \Exception($connectionName . '/password not set'));
-        }
-    }
-
-    /**
-     * Method returns true if the connection exists, false otherwise
-     *
-     * @param string $connectionName
-     *            connection name
-     * @return bool true if the connection exists, false otherwise
-     */
-    protected function dsnExists(string $connectionName): bool
-    {
-        try {
-            $this->validateDsn($connectionName);
-            return true;
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
-
-    /**
-     * Contructing connection to database object
-     *
-     * @return PdoCrud connection object wich is no initialized
-     * @codeCoverageIgnore
-     */
-    protected function constructConnection(): PdoCrud
-    {
-        return new PdoCrud();
-    }
-
-    /**
-     * Method returns database connection.
-     * If you will pas array of connection names, then the first existing one will be returned
-     *
-     * @param string|array $connectionName
-     *            Connectioт name or array of connection names.
-     * @return mixed connection
-     */
-    private function getConnectionScalar(string $connectionName = 'default-db-connection')
-    {
-        $this->validateDsn($connectionName);
-
-        self::$crud = $this->constructConnection();
-
-        self::$crud->connect(
-            [
-                'dsn' => Conf::getConfigValue($connectionName . '/dsn'),
-                'user' => Conf::getConfigValue($connectionName . '/user'),
-                'password' => Conf::getConfigValue($connectionName . '/password')
-            ]);
-
-        return self::$crud;
-    }
+    use StaticConnectionTrait;
 
     /**
      * Method returns database connection.
@@ -107,33 +33,17 @@ trait ConnectionTrait
      */
     public function getConnection($connectionName = 'default-db-connection')
     {
-        if (self::$crud !== false) {
-            return self::$crud;
-        }
-
-        if (is_string($connectionName)) {
-            return $this->getConnectionScalar($connectionName);
-        } elseif (is_array($connectionName)) {
-            foreach ($connectionName as $name) {
-                if ($this->dsnExists($name)) {
-                    return $this->getConnectionScalar($name);
-                }
-            }
-
-            throw (new \Exception('Connection with names: "' . implode(', ', $connectionName) . '" were not found'));
-        } else {
-            throw (new \Exception('Unsupported type for connection name'));
-        }
+        return self::getConnectionStatic($connectionName);
     }
 
     /**
      * Method sets connection
      *
      * @param mixed $connection
-     *            - new connection or it's mock
+     *            new connection or it's mock
      */
     public function setConnection($connection): void
     {
-        self::$crud = $connection;
+        self::setConnectionStatic($connection);
     }
 }

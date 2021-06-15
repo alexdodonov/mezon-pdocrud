@@ -16,14 +16,11 @@ class ApropriateConnectionTraitUnitTest extends ConnectionTraitTests
         // setup
         Conf::deleteConfigValue('default-db-connection/dsn');
         $this->setConnection('exact-db-connection');
-        $mock = $this->getMock();
-        $mock->setConnection(false);
-        $mock->expects($this->once())
-            ->method('constructConnection')
-            ->willReturn(new PdoCrudMock());
+        $obj = new TraitClient(new PdoCrudMock());
+        $obj->setConnection(false);
 
         // test body
-        $connection = $mock->getApropriateConnection('exact-db-connection');
+        $connection = $obj->getApropriateConnection();
 
         // assertions
         $this->assertInstanceOf(PdoCrudMock::class, $connection);
@@ -36,14 +33,11 @@ class ApropriateConnectionTraitUnitTest extends ConnectionTraitTests
     {
         // setup
         $this->setConnection('default-db-connection');
-        $mock = $this->getMockBase();
-        $mock->setConnection(false);
-        $mock->expects($this->once())
-            ->method('constructConnection')
-            ->willReturn(new PdoCrudMock());
+        $obj = new TraitClient(new PdoCrudMock());
+        $obj->setConnection(false);
 
         // test body
-        $connection = $mock->getApropriateConnection('default-db-connection');
+        $connection = $obj->getApropriateConnection();
 
         // assertions
         $this->assertInstanceOf(PdoCrudMock::class, $connection);
