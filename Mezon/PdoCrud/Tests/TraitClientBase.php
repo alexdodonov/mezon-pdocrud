@@ -1,18 +1,18 @@
 <?php
 namespace Mezon\PdoCrud\Tests;
 
-use Mezon\PdoCrud\ApropriateConnectionTrait;
 use Mezon\PdoCrud\PdoCrud;
+use Mezon\PdoCrud\StaticApropriateConnectionTrait;
 
 class TraitClientBase
 {
 
-    use ApropriateConnectionTrait;
+    use StaticApropriateConnectionTrait;
 
     /**
      * Connection to be returned
      *
-     * @var PdoCrud
+     * @var ?PdoCrud
      */
     private static $connection = null;
 

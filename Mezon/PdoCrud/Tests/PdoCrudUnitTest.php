@@ -3,6 +3,7 @@ namespace Mezon\PdoCrud\Tests;
 
 use PHPUnit\Framework\TestCase;
 
+/** @psalm-suppress PropertyNotSetInConstructor */
 class PdoCrudUnitTest extends TestCase
 {
 
@@ -184,8 +185,8 @@ class PdoCrudUnitTest extends TestCase
     public function testSelect(): void
     {
         // setup
-        $queryResultMock = $this->getMockBuilder('QueryResult')
-            ->setMethods([
+        $queryResultMock = $this->getMockBuilder(\PDOStatement::class)
+            ->onlyMethods([
             'fetchAll'
         ])
             ->disableOriginalConstructor()

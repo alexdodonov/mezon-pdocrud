@@ -5,6 +5,7 @@ use Mezon\Conf\Conf;
 use Mezon\PdoCrud\PdoCrud;
 use PHPUnit\Framework\TestCase;
 
+/** @psalm-suppress PropertyNotSetInConstructor */
 class ApropriateConnectionTraitUnitTest extends ConnectionTraitTests
 {
 
@@ -17,7 +18,7 @@ class ApropriateConnectionTraitUnitTest extends ConnectionTraitTests
         Conf::deleteConfigValue('default-db-connection/dsn');
         $this->setConnection('exact-db-connection');
         $obj = new TraitClient(new PdoCrudMock());
-        $obj->setConnection(false);
+        $obj::setConnectionStatic(false);
 
         // test body
         $connection = $obj->getApropriateConnection();
@@ -34,7 +35,7 @@ class ApropriateConnectionTraitUnitTest extends ConnectionTraitTests
         // setup
         $this->setConnection('default-db-connection');
         $obj = new TraitClient(new PdoCrudMock());
-        $obj->setConnection(false);
+        $obj::setConnectionStatic(false);
 
         // test body
         $connection = $obj->getApropriateConnection();

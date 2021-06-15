@@ -77,8 +77,8 @@ trait StaticConnectionTrait
      * Method returns database connection.
      * If you will pas array of connection names, then the first existing one will be returned
      *
-     * @param string|array $connectionName
-     *            Connectioт name or array of connection names.
+     * @param string $connectionName
+     *            Connection name or array of connection names.
      * @return PdoCrud connection
      */
     private static function getConnectionScalar(string $connectionName = 'default-db-connection'): PdoCrud
@@ -101,7 +101,7 @@ trait StaticConnectionTrait
      * Method returns database connection.
      * If you will pas array of connection names, then the first existing one will be returned
      *
-     * @param string|array $connectionName
+     * @param string|array|mixed $connectionName
      *            Connection name or array of connection names.
      * @return PdoCrud connection
      */

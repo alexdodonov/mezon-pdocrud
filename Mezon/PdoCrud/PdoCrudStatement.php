@@ -33,12 +33,12 @@ trait PdoCrudStatement
      */
     public function prepare(string $query): void
     {
-        $this->pdoStatement = $this->pdo->prepare($query, [
+        $this->pdoStatement = $this->getPdo()->prepare($query, [
             \PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY
         ]);
 
         if ($this->pdoStatement === false) {
-            $errorInfo = $this->pdo->errorInfo();
+            $errorInfo = $this->getPdo()->errorInfo();
             throw (new \Exception('Query "' . $query . '" was not prepared. ' . $errorInfo[2], - 1));
         }
     }

@@ -5,6 +5,7 @@ use Mezon\Conf\Conf;
 use Mezon\PdoCrud\PdoCrud;
 use PHPUnit\Framework\TestCase;
 
+/** @psalm-suppress PropertyNotSetInConstructor */
 class ConnectionTraitGetConnectionWithExceptionUnitTest extends ConnectionTraitTests
 {
 
@@ -22,7 +23,7 @@ class ConnectionTraitGetConnectionWithExceptionUnitTest extends ConnectionTraitT
                     $this->setUser('user');
                     $this->setPassword('password');
                     $mock = $this->getMock();
-                    $mock->setConnection(false);
+                    $mock::setConnectionStatic(false);
                     return $mock;
                 }
             ],
@@ -32,7 +33,7 @@ class ConnectionTraitGetConnectionWithExceptionUnitTest extends ConnectionTraitT
                     Conf::deleteConfigValue('default-db-connection/user');
                     $this->setPassword('password');
                     $mock = $this->getMock();
-                    $mock->setConnection(false);
+                    $mock::setConnectionStatic(false);
                     return $mock;
                 }
             ],
@@ -42,7 +43,7 @@ class ConnectionTraitGetConnectionWithExceptionUnitTest extends ConnectionTraitT
                     $this->setUser('user');
                     Conf::deleteConfigValue('default-db-connection/password');
                     $mock = $this->getMock();
-                    $mock->setConnection(false);
+                    $mock::setConnectionStatic(false);
                     return $mock;
                 }
             ]
@@ -65,6 +66,6 @@ class ConnectionTraitGetConnectionWithExceptionUnitTest extends ConnectionTraitT
         $connection = $setup();
 
         // test body
-        $connection->getConnection();
+        $connection::getConnectionStatic();
     }
 }

@@ -6,9 +6,9 @@ use Mezon\PdoCrud\PdoCrud;
 
 class TraitClient extends TraitClientBase
 {
-    public function getApropriateConnection(): PdoCrud
+    public static function getApropriateConnection(): PdoCrud
     {
-        return $this->getConnection([
+        return self::getConnectionStatic([
             'default-db-connection',
             'exact-db-connection'
         ]);

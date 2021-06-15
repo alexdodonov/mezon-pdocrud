@@ -212,6 +212,8 @@ class PdoCrudMock extends PdoCrud
 
     /**
      * Prepare statements
+     * 
+     * @var array
      */
     public $prepareStatements = [];
 
