@@ -23,7 +23,7 @@ class ConnectionTraitGetConnectionWithExceptionUnitTest extends ConnectionTraitT
                     $this->setUser('user');
                     $this->setPassword('password');
                     $mock = $this->getMock();
-                    $mock::setConnectionStatic(false);
+                    $mock::setConnectionStatic(null);
                     return $mock;
                 }
             ],
@@ -33,7 +33,7 @@ class ConnectionTraitGetConnectionWithExceptionUnitTest extends ConnectionTraitT
                     Conf::deleteConfigValue('default-db-connection/user');
                     $this->setPassword('password');
                     $mock = $this->getMock();
-                    $mock::setConnectionStatic(false);
+                    $mock::setConnectionStatic(null);
                     return $mock;
                 }
             ],
@@ -43,7 +43,7 @@ class ConnectionTraitGetConnectionWithExceptionUnitTest extends ConnectionTraitT
                     $this->setUser('user');
                     Conf::deleteConfigValue('default-db-connection/password');
                     $mock = $this->getMock();
-                    $mock::setConnectionStatic(false);
+                    $mock::setConnectionStatic(null);
                     return $mock;
                 }
             ]

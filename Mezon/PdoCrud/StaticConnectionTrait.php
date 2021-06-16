@@ -107,7 +107,7 @@ trait StaticConnectionTrait
      */
     public static function getConnectionStatic($connectionName = 'default-db-connection'): PdoCrud
     {
-        if (self::$crud !== false) {
+        if (self::$crud !== null) {
             return self::$crud;
         }
 
@@ -129,10 +129,10 @@ trait StaticConnectionTrait
     /**
      * Method sets connection
      *
-     * @param mixed $connection
-     *            - new connection or it's mock
+     * @param ?PdoCrud $connection
+     *            new connection or it's mock
      */
-    public static function setConnectionStatic($connection): void
+    public static function setConnectionStatic(?PdoCrud $connection): void
     {
         self::$crud = $connection;
     }

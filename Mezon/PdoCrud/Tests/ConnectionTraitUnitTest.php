@@ -18,7 +18,7 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
         $this->setUser('user');
         $this->setPassword('password');
         $obj = new TraitClient(new PdoCrudMock());
-        $obj::setConnectionStatic(false);
+        $obj::setConnectionStatic(null);
 
         // test body and assertions
         $this->assertInstanceOf(PdoCrudMock::class, $obj::getConnectionStatic());
@@ -73,7 +73,7 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
         // setup and assertions
         $setup();
         $obj = new TraitClient(new PdoCrudMock());
-        $obj::setConnectionStatic(false);
+        $obj::setConnectionStatic(null);
 
         // test body and assertions
         $this->assertInstanceOf(PdoCrudMock::class, $obj::getConnectionStatic([
@@ -117,7 +117,7 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
         $this->setConnection('first-connection');
         $this->setConnection('second-connection');
         $obj = $this->getMock();
-        $obj::setConnectionStatic(false);
+        $obj::setConnectionStatic(null);
 
         // test body
         $obj::getConnectionStatic($connectionName);

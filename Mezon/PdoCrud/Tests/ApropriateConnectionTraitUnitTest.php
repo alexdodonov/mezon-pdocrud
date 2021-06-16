@@ -18,7 +18,7 @@ class ApropriateConnectionTraitUnitTest extends ConnectionTraitTests
         Conf::deleteConfigValue('default-db-connection/dsn');
         $this->setConnection('exact-db-connection');
         $obj = new TraitClient(new PdoCrudMock());
-        $obj::setConnectionStatic(false);
+        $obj::setConnectionStatic(null);
 
         // test body
         $connection = $obj->getApropriateConnection();
@@ -35,7 +35,7 @@ class ApropriateConnectionTraitUnitTest extends ConnectionTraitTests
         // setup
         $this->setConnection('default-db-connection');
         $obj = new TraitClient(new PdoCrudMock());
-        $obj::setConnectionStatic(false);
+        $obj::setConnectionStatic(null);
 
         // test body
         $connection = $obj->getApropriateConnection();

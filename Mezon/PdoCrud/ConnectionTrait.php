@@ -15,7 +15,7 @@ use Mezon\Conf\Conf;
 
 /**
  * Trait for getting connections
- * 
+ *
  * @deprecated since 2021-06-15, use StaticConnectionTrait
  */
 trait ConnectionTrait
@@ -29,9 +29,9 @@ trait ConnectionTrait
      *
      * @param string|array $connectionName
      *            Connectioт name or array of connection names.
-     * @return mixed connection
+     * @return PdoCrud connection
      */
-    public function getConnection($connectionName = 'default-db-connection')
+    public function getConnection($connectionName = 'default-db-connection'): PdoCrud
     {
         return self::getConnectionStatic($connectionName);
     }
@@ -39,10 +39,10 @@ trait ConnectionTrait
     /**
      * Method sets connection
      *
-     * @param mixed $connection
+     * @param ?PdoCrud $connection
      *            new connection or it's mock
      */
-    public function setConnection($connection): void
+    public function setConnection(?PdoCrud $connection): void
     {
         self::setConnectionStatic($connection);
     }
