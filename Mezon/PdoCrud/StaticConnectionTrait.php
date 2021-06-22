@@ -136,4 +136,7 @@ trait StaticConnectionTrait
     {
         self::$crud = $connection;
     }
+
+    // TODO add non static getConnection and setConnection methods for ...
+    // backward compatibility and mark them as deprecated
 }

@@ -34,6 +34,10 @@ class TraitClientBase
      */
     protected static function constructConnection(): PdoCrud
     {
+        if (self::$connection === null) {
+            throw (new \Exception('Connection was not setup', - 1));
+        }
+
         return self::$connection;
     }
 }
