@@ -137,6 +137,27 @@ trait StaticConnectionTrait
         self::$crud = $connection;
     }
 
-    // TODO add non static getConnection and setConnection methods for ...
-    // backward compatibility and mark them as deprecated
+    /**
+     * Method returns database connection.
+     * If you will pas array of connection names, then the first existing one will be returned
+     *
+     * @param string|array $connectionName
+     *            Connectioт name or array of connection names.
+     * @return PdoCrud connection
+     */
+    public function getConnection($connectionName = 'default-db-connection'): PdoCrud
+    {
+        return self::getConnectionStatic($connectionName);
+    }
+
+    /**
+     * Method sets connection
+     *
+     * @param ?PdoCrud $connection
+     *            new connection or it's mock
+     */
+    public function setConnection(?PdoCrud $connection): void
+    {
+        self::setConnectionStatic($connection);
+    }
 }
