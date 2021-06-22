@@ -91,20 +91,6 @@ trait PdoCrudStatement
     }
 
     /**
-     * Method executes select query and fetches results
-     *
-     * @param ?array $data
-     *            query data
-     * @return array query result as an array of objects
-     * @codeCoverageIgnore
-     * @deprecated Deprecated since 2020-11-21, use executeSelect
-     */
-    public function execSelect(?array $data = null): array
-    {
-        return $this->executeSelect($data);
-    }
-
-    /**
      * Method returns count of affected rows
      *
      * @return int count of affected rows
