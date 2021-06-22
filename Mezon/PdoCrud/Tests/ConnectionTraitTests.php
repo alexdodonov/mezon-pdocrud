@@ -5,6 +5,7 @@ use Mezon\Conf\Conf;
 use Mezon\PdoCrud\PdoCrud;
 use PHPUnit\Framework\TestCase;
 
+/** @psalm-suppress PropertyNotSetInConstructor */
 class ConnectionTraitTests extends TestCase
 {
 
@@ -16,7 +17,7 @@ class ConnectionTraitTests extends TestCase
     protected function getPdoMock(): object
     {
         return $this->getMockBuilder(PdoCrud::class)
-            ->setMethods([
+            ->onlyMethods([
             'connect'
         ])
             ->getMock();
@@ -30,24 +31,10 @@ class ConnectionTraitTests extends TestCase
     protected function getMock(): object
     {
         return $this->getMockBuilder(TraitClient::class)
-            ->setMethods([
+            ->onlyMethods([
             'constructConnection'
         ])
             ->getMock();
-    }
-    
-    /**
-     * Method returns mock
-     *
-     * @return object mock
-     */
-    protected function getMockBase(): object
-    {
-        return $this->getMockBuilder(TraitClientBase::class)
-        ->setMethods([
-            'constructConnection'
-        ])
-        ->getMock();
     }
 
     /**

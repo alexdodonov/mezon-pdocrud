@@ -20,9 +20,23 @@ class PdoCrud
     /**
      * PDO object
      *
-     * @var \PDO
+     * @var ?\PDO
      */
     private $pdo = null;
+
+    /**
+     * Method returns PDO object
+     *
+     * @return \PDO
+     */
+    private function getPdo(): \PDO
+    {
+        if ($this->pdo === null) {
+            throw (new \Exception('PDO connection was not setup', - 1));
+        }
+
+        return $this->pdo;
+    }
 
     use PdoCrudStatement;
 
@@ -53,7 +67,7 @@ class PdoCrud
     protected function processQueryError($result, string $query): void
     {
         if ($result === false) {
-            $errorInfo = $this->pdo->errorInfo();
+            $errorInfo = $this->getPdo()->errorInfo();
 
             throw (new \Exception($errorInfo[2] . ' in statement ' . $query));
         }
@@ -182,7 +196,7 @@ class PdoCrud
     public function query(string $query)
     {
         // @codeCoverageIgnoreStart
-        return $this->pdo->query($query);
+        return $this->getPdo()->query($query);
         // @codeCoverageIgnoreEnd
     }
 
@@ -194,7 +208,7 @@ class PdoCrud
     public function lastInsertId(): int
     {
         // @codeCoverageIgnoreStart
-        return (int) $this->pdo->lastInsertId();
+        return (int) $this->getPdo()->lastInsertId();
         // @codeCoverageIgnoreEnd
     }
 

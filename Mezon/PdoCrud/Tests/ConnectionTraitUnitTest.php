@@ -3,8 +3,11 @@ namespace Mezon\PdoCrud\Tests;
 
 use Mezon\Conf\Conf;
 use Mezon\PdoCrud\PdoCrud;
-use PHPUnit\Framework\TestCase;
 
+/**
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class ConnectionTraitUnitTest extends ConnectionTraitTests
 {
 
@@ -13,19 +16,15 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
      */
     public function testGetConnection(): void
     {
-        // setupp
+        // setup
         $this->setDsn('dsn');
         $this->setUser('user');
         $this->setPassword('password');
-        $mock = $this->getMock();
-        $mock->setConnection(false);
+        $obj = new TraitClient(new PdoCrudMock());
+        $obj::setConnectionStatic(null);
 
-        $mock->expects($this->once())
-            ->method('constructConnection')
-            ->willReturn($this->getPdoMock());
-
-        // test body and assertionss
-        $mock->getConnection();
+        // test body and assertions
+        $this->assertInstanceOf(PdoCrudMock::class, $obj::getConnectionStatic());
     }
 
     /**
@@ -76,16 +75,13 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
     {
         // setup and assertions
         $setup();
-        $mock = $this->getMock();
-        $mock->setConnection(false);
-        $mock->expects($this->once())
-            ->method('constructConnection')
-            ->willReturn($this->getPdoMock());
+        $obj = new TraitClient(new PdoCrudMock());
+        $obj::setConnectionStatic(null);
 
-        // test body
-        $mock->getConnection([
+        // test body and assertions
+        $this->assertInstanceOf(PdoCrudMock::class, $obj::getConnectionStatic([
             'exact-connection'
-        ]);
+        ]));
     }
 
     /**
@@ -110,7 +106,7 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
     /**
      * Testing exception for array type connection name
      *
-     * @param mixed $connectionName
+     * @param array|object $connectionName
      *            connection name
      * @dataProvider getConnectionForArrayExceptionDataProvider
      */
@@ -123,11 +119,11 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
         Conf::deleteConfigValue('exact-connection/dsn');
         $this->setConnection('first-connection');
         $this->setConnection('second-connection');
-        $mock = $this->getMock();
-        $mock->setConnection(false);
+        $obj = $this->getMock();
+        $obj::setConnectionStatic(null);
 
         // test body
-        $mock->getConnection($connectionName);
+        $obj::getConnectionStatic($connectionName);
     }
 
     /**
@@ -136,10 +132,10 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
     public function testGetConnectionCached(): void
     {
         // setup
-        $mock = $this->getMock();
-        $mock->setConnection(new PdoCrudMock());
+        $obj = new TraitClient();
+        $obj::setConnectionStatic(new PdoCrudMock());
 
         // test body and assertions
-        $this->assertInstanceOf(PdoCrudMock::class, $mock->getConnection('some-connection-wich-does-not-exists'));
+        $this->assertInstanceOf(PdoCrudMock::class, $obj::getConnectionStatic('some-connection-wich-does-not-exists'));
     }
 }

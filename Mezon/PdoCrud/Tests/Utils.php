@@ -12,7 +12,7 @@ class Utils
 
     /**
      * List of methods to be mocked
-     * 
+     *
      * @var array
      */
     public static $mockingMethods = [
@@ -31,7 +31,7 @@ class Utils
     public static function getMock(TestCase $test): object
     {
         return $test->getMockBuilder(PdoCrud::class)
-            ->setMethods(self::$mockingMethods)
+            ->onlyMethods(self::$mockingMethods)
             ->disableOriginalConstructor()
             ->getMock();
     }
