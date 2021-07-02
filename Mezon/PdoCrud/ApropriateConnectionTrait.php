@@ -1,8 +1,6 @@
 <?php
 namespace Mezon\PdoCrud;
 
-use Mezon\Conf\Conf;
-
 /**
  * Class ConnectionTrait
  *
@@ -20,7 +18,7 @@ use Mezon\Conf\Conf;
  */
 trait ApropriateConnectionTrait
 {
-    use ConnectionTrait;
+    use StaticConnectionTrait;
 
     /**
      * Method returns appropriate connections
