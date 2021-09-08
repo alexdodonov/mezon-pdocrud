@@ -3,7 +3,10 @@ namespace Mezon\PdoCrud\Tests;
 
 use PHPUnit\Framework\TestCase;
 
-/** @psalm-suppress PropertyNotSetInConstructor */
+/**
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class PdoCrudUnitTest extends TestCase
 {
 
@@ -206,5 +209,26 @@ class PdoCrudUnitTest extends TestCase
 
         // assertions
         $this->assertCount(2, $result);
+    }
+
+    /**
+     * Testing method getRecordsCount
+     */
+    public function testGetRecordsCount(): void
+    {
+        // setup
+        $pdo = new PdoCrudMock();
+
+        $result = new \stdClass();
+        $result->c = 2;
+        $pdo->selectResults[] = [
+            $result
+        ];
+
+        // test body
+        $count = $pdo->getRecordsCount('c');
+
+        // assertions
+        $this->assertEquals(2, $count);
     }
 }

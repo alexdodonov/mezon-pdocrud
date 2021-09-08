@@ -5,7 +5,7 @@
       <directory>./</directory>
     </include>
     <exclude>
-      <directory suffix="Test.php">./</directory>
+      <directory>./Mezon/PdoCrud/Tests</directory>
       <directory>vendor</directory>
       <file>autoloader.php</file>
     </exclude>
@@ -23,9 +23,4 @@
     </testsuite>
   </testsuites>
   <logging/>
-  <groups>
-    <exclude>
-      <group>baseTests</group>
-    </exclude>
-  </groups>
 </phpunit>
