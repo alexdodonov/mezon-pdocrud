@@ -14,20 +14,6 @@ class ConnectionTraitTests extends TestCase
      *
      * @return object mock
      */
-    protected function getPdoMock(): object
-    {
-        return $this->getMockBuilder(PdoCrud::class)
-            ->onlyMethods([
-            'connect'
-        ])
-            ->getMock();
-    }
-
-    /**
-     * Method returns mock
-     *
-     * @return object mock
-     */
     protected function getMock(): object
     {
         return $this->getMockBuilder(TraitClient::class)
