@@ -2,10 +2,25 @@
 namespace Mezon\PdoCrud\Tests;
 
 use Mezon\Conf\Conf;
+use Mezon\PdoCrud\PdoCrud;
+use PHPUnit\Framework\TestCase;
 
-/** @psalm-suppress PropertyNotSetInConstructor */
+/**
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class ConnectionTraitUnitTest extends ConnectionTraitTests
 {
+
+    /**
+     *
+     * {@inheritdoc}
+     * @see TestCase::setUp()
+     */
+    protected function setUp(): void
+    {
+        Conf::clear();
+    }
 
     /**
      * Testing insertion method
@@ -46,22 +61,12 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
                     $this->setConnection('exact-connection');
                     $this->setConnection();
                 }
-            ],
-            // #2, the third case, connection was not found
-            [
-                function (): void {
-                    // setup method
-                    $this->setConnection('first-connection');
-                    $this->setConnection('second-connection');
-
-                    $this->expectException(\Exception::class);
-                }
             ]
         ];
     }
 
     /**
-     * Testing method getConnectionStatic
+     * Testing method
      *
      * @param callable $setup
      *            setup method
@@ -78,6 +83,27 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
         $this->assertInstanceOf(PdoCrudMock::class, $obj::getConnectionStatic([
             'exact-connection'
         ]));
+    }
+
+    /**
+     * Testing exception when fetching unexisting connection
+     */
+    public function testExceptionWhenFetchingUnexistingConnection(): void
+    {
+        // assertions
+        $this->expectException(\Exception::class);
+
+        // setup
+        $obj = new TraitClient(new PdoCrudMock());
+        $obj::setConnectionStatic(null);
+
+        $this->setConnection('first-connection');
+        $this->setConnection('second-connection');
+
+        // test body
+        $obj::getConnectionStatic([
+            'exact-connection'
+        ]);
     }
 
     /**
