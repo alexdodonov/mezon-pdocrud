@@ -2,7 +2,6 @@
 namespace Mezon\PdoCrud\Tests;
 
 use Mezon\Conf\Conf;
-use Mezon\PdoCrud\PdoCrud;
 
 /** @psalm-suppress PropertyNotSetInConstructor */
 class ConnectionTraitUnitTest extends ConnectionTraitTests
@@ -62,7 +61,7 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
     }
 
     /**
-     * Testing method
+     * Testing method getConnectionStatic
      *
      * @param callable $setup
      *            setup method

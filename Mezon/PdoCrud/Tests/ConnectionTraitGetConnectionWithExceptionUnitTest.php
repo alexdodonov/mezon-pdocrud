@@ -2,8 +2,6 @@
 namespace Mezon\PdoCrud\Tests;
 
 use Mezon\Conf\Conf;
-use Mezon\PdoCrud\PdoCrud;
-use PHPUnit\Framework\TestCase;
 
 /** @psalm-suppress PropertyNotSetInConstructor */
 class ConnectionTraitGetConnectionWithExceptionUnitTest extends ConnectionTraitTests

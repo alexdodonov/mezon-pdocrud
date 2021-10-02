@@ -1,7 +1,6 @@
 <?php
 namespace Mezon\PdoCrud\Tests;
 
-use Mezon\PdoCrud\ApropriateConnectionTrait;
 use Mezon\PdoCrud\PdoCrud;
 
 class TraitClient extends TraitClientBase

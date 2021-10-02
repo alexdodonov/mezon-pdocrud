@@ -1,8 +1,6 @@
 <?php
 namespace Mezon\PdoCrud;
 
-use Mezon\Conf\Conf;
-
 /**
  * Class ConnectionTrait
  *
