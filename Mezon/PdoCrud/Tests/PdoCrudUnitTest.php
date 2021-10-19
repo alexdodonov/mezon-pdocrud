@@ -152,66 +152,6 @@ class PdoCrudUnitTest extends TestCase
     }
 
     /**
-     * Testing delete method
-     */
-    public function testDelete(): void
-    {
-        // setup
-        $mock = \Mezon\PdoCrud\Tests\Utils::getMock($this);
-
-        $mock->expects($this->exactly(1))
-            ->method('query')
-            ->willReturn(new ResultMock());
-
-        // test body and assertions
-        $mock->delete('records', 'id=1');
-    }
-
-    /**
-     * Testing update method
-     */
-    public function testUpdate(): void
-    {
-        // setup
-        $mock = \Mezon\PdoCrud\Tests\Utils::getMock($this);
-        $mock->expects($this->exactly(1))
-            ->method('query')
-            ->willReturn(new ResultMock());
-
-        // test body and assertions
-        $mock->update('som-record', [], '1=1');
-    }
-
-    /**
-     * Testing select method
-     */
-    public function testSelect(): void
-    {
-        // setup
-        $queryResultMock = $this->getMockBuilder(\PDOStatement::class)
-            ->onlyMethods([
-            'fetchAll'
-        ])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $queryResultMock->method('fetchAll')->willReturn([
-            [],
-            []
-        ]);
-
-        $mock = \Mezon\PdoCrud\Tests\Utils::getMock($this);
-        $mock->expects($this->exactly(1))
-            ->method('query')
-            ->willReturn($queryResultMock);
-
-        // test body
-        $result = $mock->select('som-record', '', '1=1');
-
-        // assertions
-        $this->assertCount(2, $result);
-    }
-
-    /**
      * Testing method getRecordsCount
      */
     public function testGetRecordsCount(): void

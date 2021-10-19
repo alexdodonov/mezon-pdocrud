@@ -82,25 +82,6 @@ class PdoCrudMock extends PdoCrud
     }
 
     /**
-     * Counter for delete method calls
-     *
-     * @var integer
-     */
-    public $deleteWasCalledCounter = 0;
-
-    /**
-     *
-     * {@inheritdoc}
-     * @see PdoCrud::delete()
-     */
-    public function delete($tableName, $where, $limit = 10000000): int
-    {
-        $this->deleteWasCalledCounter ++;
-
-        return 1;
-    }
-
-    /**
      * Locked tables
      *
      * @var array

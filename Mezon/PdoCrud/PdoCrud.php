@@ -90,6 +90,18 @@ class PdoCrud
     }
 
     /**
+     * Method fetches result
+     *
+     * @param mixed $result
+     *            result object
+     * @return array result data
+     */
+    protected function fetchAll($result): array
+    {
+        return $result->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
      * Getting records
      *
      * @param string $fields
@@ -104,6 +116,7 @@ class PdoCrud
      *            Count of records
      * @return array List of records
      * @deprecated since 2020-06-16
+     * @codeCoverageIgnore
      */
     public function select(
         string $fields,
@@ -118,7 +131,7 @@ class PdoCrud
 
         $this->processQueryError($result, $query);
 
-        return $result->fetchAll(\PDO::FETCH_ASSOC);
+        return $this->fetchAll($result);
     }
 
     /**
@@ -180,35 +193,12 @@ class PdoCrud
      *            Limit for afffecting records
      * @return int Count of updated records
      * @deprecated Deprecated since 2020-11-21, use execute
+     * @codeCoverageIgnore
      */
     public function update(string $tableName, array $record, string $where, int $limit = 10000000): int
     {
         $query = 'UPDATE ' . $tableName . ' SET ' . $this->compileGetQuery($record) . ' WHERE ' . $where . ' LIMIT ' .
             $limit;
-
-        $result = $this->query($query);
-
-        $this->processQueryError($result, $query);
-
-        return $result->rowCount();
-    }
-
-    /**
-     * Deleting records
-     *
-     * @param string $tableName
-     *            Table name
-     * @param string $where
-     *            Condition
-     * @param int $limit
-     *            Liti for afffecting records
-     * @return int Count of deleted records
-     * @deprecated Deprecated since 2020-11-21, use execute
-     */
-    public function delete($tableName, $where, $limit = 10000000): int
-    {
-        // TODO remove this method, do not forget to up version
-        $query = 'DELETE FROM ' . $tableName . ' WHERE ' . $where . ' LIMIT ' . intval($limit);
 
         $result = $this->query($query);
 

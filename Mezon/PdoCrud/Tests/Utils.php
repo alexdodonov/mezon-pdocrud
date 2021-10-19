@@ -13,7 +13,7 @@ class Utils
     /**
      * List of methods to be mocked
      *
-     * @var array
+     * @var string[]
      */
     public static $mockingMethods = [
         'query',
@@ -25,7 +25,7 @@ class Utils
      * Method returns mock of the PdoCrud object
      * Mocked methods: query, processQueryError, lastInsertId
      *
-     * @param \PHPUnit\Framework\TestCase $test
+     * @param TestCase $test
      * @return object
      */
     public static function getMock(TestCase $test): object
