@@ -107,16 +107,6 @@ class PdoCrudMock extends PdoCrud
     }
 
     /**
-     *
-     * {@inheritdoc}
-     * @see PdoCrud::unlock()
-     */
-    public function unlock(): void
-    {
-        // nop
-    }
-
-    /**
      * Special flag wich shows that transaction was started
      *
      * @var boolean

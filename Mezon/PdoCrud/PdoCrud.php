@@ -28,6 +28,7 @@ class PdoCrud
      * Method returns PDO object
      *
      * @return \PDO
+     * @codeCoverageIgnore
      */
     private function getPdo(): \PDO
     {
@@ -249,9 +250,8 @@ class PdoCrud
      */
     public function unlock(): void
     {
-        $result = $this->query('UNLOCK TABLES');
-
-        $this->processQueryError($result, 'UNLOCK TABLES');
+        $this->prepare('UNLOCK TABLES');
+        $this->execute();
     }
 
     /**

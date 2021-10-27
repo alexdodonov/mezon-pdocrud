@@ -129,10 +129,15 @@ class PdoCrudUnitTest extends TestCase
     public function testUnlock(): void
     {
         // setup
-        $mock = $this->getPdoMock();
+        $mock = new PdoCrudMock();
 
-        // test body and assertions
+        // test body
         $mock->unlock();
+
+        // assertions
+        $this->assertEquals('UNLOCK TABLES', $mock->prepareStatements[0]);
+        $this->assertCount(1, $mock->prepareStatements);
+        $this->assertEquals(1, $mock->executeWasCalledCounter);
     }
 
     /**
