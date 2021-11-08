@@ -68,6 +68,10 @@ class PdoCrud
     protected function processQueryError($result, string $query): void
     {
         if ($result === false) {
+            /**
+             *
+             * @var array{0: string, 1: string, 2: string}
+             */
             $errorInfo = $this->getPdo()->errorInfo();
 
             throw (new \Exception($errorInfo[2] . ' in statement ' . $query));

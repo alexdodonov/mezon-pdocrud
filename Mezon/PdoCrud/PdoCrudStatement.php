@@ -38,6 +38,10 @@ trait PdoCrudStatement
         ]);
 
         if ($this->pdoStatement === false) {
+            /**
+             *
+             * @var array{0: string, 1: string, 2: string}
+             */
             $errorInfo = $this->getPdo()->errorInfo();
             throw (new \Exception('Query "' . $query . '" was not prepared. ' . $errorInfo[2], - 1));
         }
@@ -69,6 +73,10 @@ trait PdoCrudStatement
     public function execute(?array $data = null): void
     {
         if ($this->pdoStatement->execute($data) === false) {
+            /**
+             * 
+             * @var array{0: string, 1: string, 2: string}
+             */
             $info = $this->pdoStatement->errorInfo();
 
             throw (new \Exception($info[2], - 1));
