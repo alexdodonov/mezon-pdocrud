@@ -97,7 +97,7 @@ class PdoCrudUnitTest extends TestCase
     public function testCommit(): void
     {
         // setup
-        $mock = \Mezon\PdoCrud\Tests\Utils::getMock($this);
+        $mock = Utils::getMock($this);
 
         $mock->expects($this->exactly(2))
             ->method('query')
@@ -113,7 +113,7 @@ class PdoCrudUnitTest extends TestCase
     public function testStartTransaction(): void
     {
         // setup
-        $mock = \Mezon\PdoCrud\Tests\Utils::getMock($this);
+        $mock = Utils::getMock($this);
 
         $mock->expects($this->exactly(2))
             ->method('query')
@@ -146,14 +146,24 @@ class PdoCrudUnitTest extends TestCase
     public function testLock(): void
     {
         // setup
-        $mock = $this->getPdoMock();
+        $mock = new PdoCrudMock();
+        $mock->lockedTables = [];
+        $mock->lockedTablesModes = [];
 
-        // test body and assertions
+        // test body
         $mock->lock([
             'records'
         ], [
             'WRITE'
         ]);
+
+        // assertions
+        $this->assertEquals([
+            'records'
+        ], $mock->lockedTables);
+        $this->assertEquals([
+            'WRITE'
+        ], $mock->lockedTablesModes);
     }
 
     /**

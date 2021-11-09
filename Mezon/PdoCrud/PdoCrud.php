@@ -150,6 +150,7 @@ class PdoCrud
     {
         $setFieldsStatement = [];
 
+        // TODO remove it sooner or later
         foreach ($record as $field => $value) {
             if (is_string($value) && strtoupper($value) === 'INC') {
                 $setFieldsStatement[] = $field . ' = ' . $field . ' + 1';
@@ -202,7 +203,7 @@ class PdoCrud
      */
     public function update(string $tableName, array $record, string $where, int $limit = 10000000): int
     {
-        $query = 'UPDATE ' . $tableName . ' SET ' . $this->compileGetQuery($record) . ' WHERE ' . $where . ' LIMIT ' .
+        $query = 'UPDATE ' . $tableName . ' SET ' . $this->compileSetQuery($record) . ' WHERE ' . $where . ' LIMIT ' .
             $limit;
 
         $result = $this->query($query);
@@ -339,7 +340,7 @@ class PdoCrud
      */
     public function insert(string $tableName, array $record): int
     {
-        $query = 'INSERT ' . $tableName . ' SET ' . $this->compileGetQuery($record);
+        $query = 'INSERT ' . $tableName . ' SET ' . $this->compileSetQuery($record);
 
         $result = $this->query($query);
 
@@ -377,5 +378,32 @@ class PdoCrud
         $this->pdo = null;
 
         unset($this->pdo);
+    }
+
+    /**
+     * Method compiles set-query
+     *
+     * @param array $record
+     *            Inserting record
+     * @return string Compiled query string
+     */
+    public function compileSetQuery(array $record): string
+    {
+        // NOTE this method is used not only by this class but also by CrudServiceModel and llaother models wich insert data
+        $setFieldsStatement = [];
+
+        foreach ($record as $field => $value) {
+            if (is_string($value) && strtoupper($value) === 'INC') {
+                $setFieldsStatement[] = $field . ' = ' . $field . ' + 1';
+            } elseif (is_string($value) && strtoupper($value) !== 'NOW()') {
+                $setFieldsStatement[] = $field . ' = "' . $value . '"';
+            } elseif ($value === null) {
+                $setFieldsStatement[] = $field . ' = NULL';
+            } else {
+                $setFieldsStatement[] = $field . ' = ' . $value;
+            }
+        }
+
+        return implode(' , ', $setFieldsStatement);
     }
 }
