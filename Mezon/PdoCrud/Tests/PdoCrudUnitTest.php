@@ -97,14 +97,13 @@ class PdoCrudUnitTest extends TestCase
     public function testCommit(): void
     {
         // setup
-        $mock = Utils::getMock($this);
+        $mock = new PdoCrudMock();
 
-        $mock->expects($this->exactly(2))
-            ->method('query')
-            ->willReturn(true);
-
-        // test body and assertions
+        // test body
         $mock->commit();
+
+        // assertions
+        $this->assertTrue($mock->commitWasPerformed);
     }
 
     /**
@@ -113,14 +112,13 @@ class PdoCrudUnitTest extends TestCase
     public function testStartTransaction(): void
     {
         // setup
-        $mock = Utils::getMock($this);
+        $mock = new PdoCrudMock();
 
-        $mock->expects($this->exactly(2))
-            ->method('query')
-            ->willReturn(true);
-
-        // test body and assertions
+        // test body
         $mock->startTransaction();
+
+        // assertions
+        $this->assertTrue($mock->transactionWasStarted);
     }
 
     /**

@@ -30,6 +30,7 @@ class Utils
      */
     public static function getMock(TestCase $test): object
     {
+        // TODO remove this method, use PdoCrudMock instead of it
         return $test->getMockBuilder(PdoCrud::class)
             ->onlyMethods(self::$mockingMethods)
             ->disableOriginalConstructor()

@@ -32,15 +32,15 @@ trait StaticConnectionTrait
      */
     protected static function validateDsn(string $connectionName): void
     {
-        if (Conf::getConfigValue($connectionName . '/dsn') === false) {
+        if (Conf::getConfigValueAsString($connectionName . '/dsn') === '') {
             throw (new \Exception($connectionName . '/dsn not set'));
         }
 
-        if (Conf::getConfigValue($connectionName . '/user') === false) {
+        if (Conf::getConfigValueAsString($connectionName . '/user') === '') {
             throw (new \Exception($connectionName . '/user not set'));
         }
 
-        if (Conf::getConfigValue($connectionName . '/password') === false) {
+        if (Conf::getConfigValueAsString($connectionName . '/password') === '') {
             throw (new \Exception($connectionName . '/password not set'));
         }
     }
@@ -89,9 +89,9 @@ trait StaticConnectionTrait
 
         self::$crud->connect(
             [
-                'dsn' => Conf::getConfigValue($connectionName . '/dsn'),
-                'user' => Conf::getConfigValue($connectionName . '/user'),
-                'password' => Conf::getConfigValue($connectionName . '/password')
+                'dsn' => Conf::getConfigValueAsString($connectionName . '/dsn'),
+                'user' => Conf::getConfigValueAsString($connectionName . '/user'),
+                'password' => Conf::getConfigValueAsString($connectionName . '/password')
             ]);
 
         return self::$crud;
