@@ -11,84 +11,18 @@ class PdoCrudUnitTest extends TestCase
 {
 
     /**
-     * Test case setup
-     */
-    public static function setUpBeforeClass(): void
-    {
-        Utils::$mockingMethods = [
-            'query',
-            'processQueryError',
-            'lastInsertId'
-        ];
-    }
-
-    /**
-     * Method returns mock
-     *
-     * @return object PdoCrud mock
-     */
-    protected function getPdoMock(): object
-    {
-        $mock = Utils::getMock($this);
-
-        $mock->expects($this->once())
-            ->method('query');
-
-        $mock->expects($this->once())
-            ->method('processQueryError');
-
-        return $mock;
-    }
-
-    /**
-     * Testing multiple insertion method
-     */
-    public function testInsertMultyple(): void
-    {
-        $mock = $this->getPdoMock();
-
-        $mock->insertMultyple('records', [
-            [
-                'id' => 1
-            ],
-            [
-                'id' => 2
-            ]
-        ]);
-    }
-
-    /**
-     * Testing insertion method
-     */
-    public function testInsert(): void
-    {
-        // setup
-        $mock = $this->getPdoMock();
-
-        $mock->expects($this->once())
-            ->method('lastInsertId')
-            ->willReturn(1);
-
-        // test body and assertions
-        $mock->insert('records', [
-            'id' => 1
-        ]);
-    }
-
-    /**
      * Testing rollback method
      */
     public function testRollback(): void
     {
         // setup
-        $mock = $this->getPdoMock();
+        $mock = new PdoCrudMock();
 
-        $mock->expects($this->once())
-            ->method('query')
-            ->willReturn(true);
-
-        // test body and assertions
+        // test body
         $mock->rollback();
+
+        // assertions
+        $this->assertTrue($mock->rolledBack);
     }
 
     /**

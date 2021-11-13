@@ -27,61 +27,6 @@ class PdoCrudMock extends PdoCrud
     }
 
     /**
-     * Selected result
-     *
-     * @var array
-     */
-    public $selectResult = [];
-
-    /**
-     *
-     * {@inheritdoc}
-     * @see PdoCrud::select()
-     */
-    public function select(
-        string $fields,
-        string $tableNames,
-        string $where = '1 = 1',
-        int $from = 0,
-        int $limit = 1000000): array
-    {
-        return $this->selectResult;
-    }
-
-    /**
-     * Counter for update method calls
-     *
-     * @var integer
-     */
-    public $updateWasCalledCounter = 0;
-
-    /**
-     * Update calls data
-     *
-     * @var array
-     */
-    public $updateCalls = [];
-
-    /**
-     *
-     * {@inheritdoc}
-     * @see PdoCrud::update()
-     */
-    public function update(string $tableName, array $record, string $where, int $limit = 10000000): int
-    {
-        $this->updateWasCalledCounter ++;
-
-        $this->updateCalls[] = [
-            $tableName,
-            $record,
-            $where,
-            $limit
-        ];
-
-        return 1;
-    }
-
-    /**
      * Locked tables
      *
      * @var array
@@ -124,13 +69,20 @@ class PdoCrudMock extends PdoCrud
     }
 
     /**
+     * Special flag wich shows that roll back was performed
+     *
+     * @var boolean
+     */
+    public $rolledBack = false;
+
+    /**
      *
      * {@inheritdoc}
      * @see PdoCrud::rollback()
      */
     public function rollback(): void
     {
-        // nop
+        $this->rolledBack = true;
     }
 
     /**
@@ -151,39 +103,8 @@ class PdoCrudMock extends PdoCrud
     }
 
     /**
-     * Field stores count of insert method was called
-     *
-     * @var integer
-     */
-    public $insertWasCalledCounter = 0;
-
-    /**
-     * Insert calls
-     *
-     * @var array
-     */
-    public $insertCalls = [];
-
-    /**
-     *
-     * {@inheritdoc}
-     * @see PdoCrud::insert()
-     */
-    public function insert(string $tableName, array $record): int
-    {
-        $this->insertWasCalledCounter ++;
-
-        $this->insertCalls[] = [
-            $tableName,
-            $record
-        ];
-
-        return 1;
-    }
-
-    /**
      * Prepare statements
-     * 
+     *
      * @var array
      */
     public $prepareStatements = [];
@@ -191,7 +112,7 @@ class PdoCrudMock extends PdoCrud
     /**
      *
      * {@inheritdoc}
-     * @see PdoCrudStatement::insert()
+     * @see PdoCrudStatement::prepare()
      */
     public function prepare(string $query): void
     {

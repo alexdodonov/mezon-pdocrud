@@ -107,66 +107,6 @@ class PdoCrud
     }
 
     /**
-     * Getting records
-     *
-     * @param string $fields
-     *            List of fields
-     * @param string $tableNames
-     *            List of tables
-     * @param string $where
-     *            Condition
-     * @param int $from
-     *            First record in query
-     * @param int $limit
-     *            Count of records
-     * @return array List of records
-     * @deprecated since 2020-06-16
-     * @codeCoverageIgnore
-     */
-    public function select(
-        string $fields,
-        string $tableNames,
-        string $where = '1 = 1',
-        int $from = 0,
-        int $limit = 1000000): array
-    {
-        $query = "SELECT $fields FROM $tableNames WHERE $where LIMIT " . intval($from) . ' , ' . intval($limit);
-
-        $result = $this->query($query);
-
-        $this->processQueryError($result, $query);
-
-        return $this->fetchAll($result);
-    }
-
-    /**
-     * Method compiles set-query
-     *
-     * @param array $record
-     *            Inserting record
-     * @return string Compiled query string
-     */
-    protected function compileGetQuery(array $record): string
-    {
-        $setFieldsStatement = [];
-
-        // TODO remove it sooner or later
-        foreach ($record as $field => $value) {
-            if (is_string($value) && strtoupper($value) === 'INC') {
-                $setFieldsStatement[] = $field . ' = ' . $field . ' + 1';
-            } elseif (is_string($value) && strtoupper($value) !== 'NOW()') {
-                $setFieldsStatement[] = $field . ' = "' . $value . '"';
-            } elseif ($value === null) {
-                $setFieldsStatement[] = $field . ' = NULL';
-            } else {
-                $setFieldsStatement[] = $field . ' = ' . $value;
-            }
-        }
-
-        return implode(' , ', $setFieldsStatement);
-    }
-
-    /**
      * Method compiles set-multyple-query
      *
      * @param array $records
@@ -184,33 +124,6 @@ class PdoCrud
         }
 
         return $query . implode(' , ', $values);
-    }
-
-    /**
-     * Updating records
-     *
-     * @param string $tableName
-     *            Table name
-     * @param array $record
-     *            Updating records
-     * @param string $where
-     *            Condition
-     * @param int $limit
-     *            Limit for afffecting records
-     * @return int Count of updated records
-     * @deprecated Deprecated since 2020-11-21, use execute
-     * @codeCoverageIgnore
-     */
-    public function update(string $tableName, array $record, string $where, int $limit = 10000000): int
-    {
-        $query = 'UPDATE ' . $tableName . ' SET ' . $this->compileSetQuery($record) . ' WHERE ' . $where . ' LIMIT ' .
-            $limit;
-
-        $result = $this->query($query);
-
-        $this->processQueryError($result, $query);
-
-        return $result->rowCount();
     }
 
     /**
@@ -326,48 +239,6 @@ class PdoCrud
         // @codeCoverageIgnoreStart
         return (int) $this->getPdo()->lastInsertId();
         // @codeCoverageIgnoreEnd
-    }
-
-    /**
-     * Method inserts record
-     *
-     * @param string $tableName
-     *            Table name
-     * @param array $record
-     *            Inserting record
-     * @return int New record's id
-     * @deprecated Deprecated since 2020-11-21, use execute
-     */
-    public function insert(string $tableName, array $record): int
-    {
-        $query = 'INSERT ' . $tableName . ' SET ' . $this->compileSetQuery($record);
-
-        $result = $this->query($query);
-
-        $this->processQueryError($result, $query);
-
-        return $this->lastInsertId();
-    }
-
-    /**
-     * Method inserts record
-     *
-     * @param string $tableName
-     *            Table name
-     * @param array $records
-     *            Inserting records
-     * @return int New record's id
-     * @deprecated Deprecated since 2020-11-21, use execute
-     */
-    public function insertMultyple(string $tableName, array $records): int
-    {
-        $query = 'INSERT INTO ' . $tableName . ' ' . $this->setMultypleQuery($records) . ';';
-
-        $result = $this->query($query);
-
-        $this->processQueryError($result, $query);
-
-        return 0;
     }
 
     /**
