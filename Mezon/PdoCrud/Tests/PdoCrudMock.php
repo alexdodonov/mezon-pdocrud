@@ -137,7 +137,7 @@ class PdoCrudMock extends PdoCrud
     /**
      * List of return values
      *
-     * @var object[][]
+     * @var array<array-key, array<array-key, array|object>>
      */
     public $selectResults = [];
 
