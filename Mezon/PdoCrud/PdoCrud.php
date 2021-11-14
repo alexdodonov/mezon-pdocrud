@@ -44,7 +44,7 @@ class PdoCrud
     /**
      * Method connects to the database
      *
-     * @param array $connnectionData
+     * @param array<string, string> $connnectionData
      *            Connection settings
      * @codeCoverageIgnore
      */
@@ -53,85 +53,16 @@ class PdoCrud
         // no need to test this single string. assume that PDO developers did it
         $this->pdo = new \PDO($connnectionData['dsn'], $connnectionData['user'], $connnectionData['password']);
 
-        $this->query('SET NAMES utf8');
-    }
-
-    /**
-     * Method handles request errors
-     *
-     * @param mixed $result
-     *            Query result
-     * @param string $query
-     *            SQL Query
-     * @codeCoverageIgnore
-     */
-    protected function processQueryError($result, string $query): void
-    {
-        if ($result === false) {
-            /**
-             *
-             * @var array{0: string, 1: string, 2: string}
-             */
-            $errorInfo = $this->getPdo()->errorInfo();
-
-            throw (new \Exception($errorInfo[2] . ' in statement ' . $query));
-        }
-    }
-
-    /**
-     *
-     * @param string $fieldName
-     * @return int
-     */
-    public function getRecordsCount(string $fieldName = 'records_count'): int
-    {
-        $records = $this->executeSelect();
-
-        if (empty($records)) {
-            return 0;
-        } else {
-            return $records[0]->$fieldName;
-        }
-    }
-
-    /**
-     * Method fetches result
-     *
-     * @param mixed $result
-     *            result object
-     * @return array result data
-     */
-    protected function fetchAll($result): array
-    {
-        return $result->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
-    /**
-     * Method compiles set-multyple-query
-     *
-     * @param array $records
-     *            Inserting records
-     * @return string Compiled query string
-     */
-    protected function setMultypleQuery(array $records): string
-    {
-        $query = '( ' . implode(' , ', array_keys($records[0])) . ' ) VALUES ';
-
-        $values = [];
-
-        foreach ($records as $record) {
-            $values[] = "( '" . implode("' , '", array_values($record)) . "' )";
-        }
-
-        return $query . implode(' , ', $values);
+        $this->prepare('SET NAMES utf8');
+        $this->execute();
     }
 
     /**
      * Method compiles lock queries
      *
-     * @param array $tables
+     * @param string[] $tables
      *            List of tables
-     * @param array $modes
+     * @param string[] $modes
      *            List of lock modes
      * @return string Query
      */
@@ -149,18 +80,18 @@ class PdoCrud
     /**
      * Method locks tables
      *
-     * @param array $tables
-     *            List of tables
-     * @param array $modes
-     *            List of lock modes
+     * @param string[] $tables
+     *            list of tables
+     * @param string[] $modes
+     *            list of lock modes
      */
     public function lock(array $tables, array $modes): void
     {
         $query = $this->lockQuery($tables, $modes);
 
-        $result = $this->query($query);
+        $this->prepare($query);
 
-        $this->processQueryError($result, $query);
+        $this->execute();
     }
 
     /**
@@ -169,6 +100,7 @@ class PdoCrud
     public function unlock(): void
     {
         $this->prepare('UNLOCK TABLES');
+
         $this->execute();
     }
 
@@ -178,14 +110,14 @@ class PdoCrud
     public function startTransaction(): void
     {
         // setting autocommit off
-        $result = $this->query('SET AUTOCOMMIT = 0');
+        $this->prepare('SET AUTOCOMMIT = 0');
 
-        $this->processQueryError($result, 'SET AUTOCOMMIT = 0');
+        $this->execute();
 
         // starting transaction
-        $result = $this->query('START TRANSACTION');
+        $this->prepare('START TRANSACTION');
 
-        $this->processQueryError($result, 'START TRANSACTION');
+        $this->execute();
     }
 
     /**
@@ -194,14 +126,14 @@ class PdoCrud
     public function commit(): void
     {
         // commit transaction
-        $result = $this->query('COMMIT');
+        $this->prepare('COMMIT');
 
-        $this->processQueryError($result, 'COMMIT');
+        $this->execute();
 
         // setting autocommit on
-        $result = $this->query('SET AUTOCOMMIT = 1');
+        $this->prepare('SET AUTOCOMMIT = 1');
 
-        $this->processQueryError($result, 'SET AUTOCOMMIT = 1');
+        $this->execute();
     }
 
     /**
@@ -210,23 +142,9 @@ class PdoCrud
     public function rollback(): void
     {
         // rollback transaction
-        $result = $this->query('ROLLBACK');
+        $this->prepare('ROLLBACK');
 
-        $this->processQueryError($result, 'ROLLBACK');
-    }
-
-    /**
-     * Method executes query
-     *
-     * @param string $query
-     *            Query
-     * @return mixed Query execution result
-     */
-    public function query(string $query)
-    {
-        // @codeCoverageIgnoreStart
-        return $this->getPdo()->query($query);
-        // @codeCoverageIgnoreEnd
+        $this->execute();
     }
 
     /**
@@ -254,7 +172,8 @@ class PdoCrud
     /**
      * Method compiles set-query
      *
-     * @param array $record
+     * @param
+     *            mixed[] $record
      *            Inserting record
      * @return string Compiled query string
      */
@@ -263,6 +182,7 @@ class PdoCrud
         // NOTE this method is used not only by this class but also by CrudServiceModel and llaother models wich insert data
         $setFieldsStatement = [];
 
+        /** @var mixed $value */
         foreach ($record as $field => $value) {
             if (is_string($value) && strtoupper($value) === 'INC') {
                 $setFieldsStatement[] = $field . ' = ' . $field . ' + 1';
@@ -270,8 +190,10 @@ class PdoCrud
                 $setFieldsStatement[] = $field . ' = "' . $value . '"';
             } elseif ($value === null) {
                 $setFieldsStatement[] = $field . ' = NULL';
-            } else {
+            } elseif (is_scalar($value)) {
                 $setFieldsStatement[] = $field . ' = ' . $value;
+            } else {
+                throw (new \Exception('Unsupported data type', - 1));
             }
         }
 

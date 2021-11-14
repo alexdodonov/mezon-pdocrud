@@ -2,6 +2,7 @@
 namespace Mezon\PdoCrud\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Mezon\PdoCrud\PdoCrud;
 
 /**
  *
@@ -99,23 +100,44 @@ class PdoCrudUnitTest extends TestCase
     }
 
     /**
-     * Testing method getRecordsCount
+     * Testing method compileSetQuery
      */
-    public function testGetRecordsCount(): void
+    public function testCompileSetQuery(): void
     {
         // setup
-        $pdo = new PdoCrudMock();
-
-        $result = new \stdClass();
-        $result->c = 2;
-        $pdo->selectResults[] = [
-            $result
+        $mock = new PdoCrud();
+        $record = [
+            'a' => 'INC',
+            'b' => 'NOW()',
+            'c' => null,
+            'd' => 1,
+            'e' => "s"
         ];
 
         // test body
-        $count = $pdo->getRecordsCount('c');
+        $result = $mock->compileSetQuery($record);
 
         // assertions
-        $this->assertEquals(2, $count);
+        $this->assertEquals('a = a + 1 , b = NOW() , c = NULL , d = 1 , e = "s"', $result);
+    }
+
+    /**
+     * Testing exception compileSetQuery
+     */
+    public function testExceptionCompileSetQuery(): void
+    {
+        // assertions
+        $this->expectException(\Exception::class);
+        $this->expectExceptionCode(- 1);
+        $this->expectExceptionMessage('Unsupported data type');
+
+        // setup
+        $mock = new PdoCrud();
+        $record = [
+            'a' => new \stdClass()
+        ];
+
+        // test body
+        $mock->compileSetQuery($record);
     }
 }

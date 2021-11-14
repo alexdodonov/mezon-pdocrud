@@ -2,12 +2,12 @@
 namespace Mezon\PdoCrud\Tests;
 
 use Mezon\PdoCrud\PdoCrud;
-use Mezon\PdoCrud\StaticApropriateConnectionTrait;
+use Mezon\PdoCrud\ApropriateConnectionTrait;
 
 class TraitClientBase
 {
 
-    use StaticApropriateConnectionTrait;
+    use ApropriateConnectionTrait;
 
     /**
      * Connection to be returned

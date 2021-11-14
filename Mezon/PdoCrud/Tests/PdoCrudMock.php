@@ -24,6 +24,8 @@ class PdoCrudMock extends PdoCrud
     public function connect(array $connnectionData): void
     {
         $this->connectWasCalled = true;
+
+        parent::commit();
     }
 
     /**
@@ -49,6 +51,8 @@ class PdoCrudMock extends PdoCrud
     {
         $this->lockedTables = $tables;
         $this->lockedTablesModes = $modes;
+
+        parent::lock($tables, $modes);
     }
 
     /**
@@ -66,6 +70,8 @@ class PdoCrudMock extends PdoCrud
     public function startTransaction(): void
     {
         $this->transactionWasStarted = true;
+
+        parent::startTransaction();
     }
 
     /**
@@ -83,6 +89,8 @@ class PdoCrudMock extends PdoCrud
     public function rollback(): void
     {
         $this->rolledBack = true;
+
+        parent::rollback();
     }
 
     /**
@@ -129,7 +137,7 @@ class PdoCrudMock extends PdoCrud
     /**
      * List of return values
      *
-     * @var array
+     * @var object[][]
      */
     public $selectResults = [];
 

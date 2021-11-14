@@ -2,7 +2,6 @@
 namespace Mezon\PdoCrud\Tests;
 
 use Mezon\Conf\Conf;
-use Mezon\PdoCrud\PdoCrud;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -32,10 +31,10 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
         $this->setUser('user');
         $this->setPassword('password');
         $obj = new TraitClient(new PdoCrudMock());
-        $obj::setConnectionStatic(null);
+        $obj::setConnection(null);
 
         // test body and assertions
-        $this->assertInstanceOf(PdoCrudMock::class, $obj::getConnectionStatic());
+        $this->assertInstanceOf(PdoCrudMock::class, $obj::getConnection());
     }
 
     /**
@@ -77,10 +76,10 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
         // setup and assertions
         $setup();
         $obj = new TraitClient(new PdoCrudMock());
-        $obj::setConnectionStatic(null);
+        $obj::setConnection(null);
 
         // test body and assertions
-        $this->assertInstanceOf(PdoCrudMock::class, $obj::getConnectionStatic([
+        $this->assertInstanceOf(PdoCrudMock::class, $obj::getConnection([
             'exact-connection'
         ]));
     }
@@ -95,13 +94,13 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
 
         // setup
         $obj = new TraitClient(new PdoCrudMock());
-        $obj::setConnectionStatic(null);
+        $obj::setConnection(null);
 
         $this->setConnection('first-connection');
         $this->setConnection('second-connection');
 
         // test body
-        $obj::getConnectionStatic([
+        $obj::getConnection([
             'exact-connection'
         ]);
     }
@@ -141,11 +140,11 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
         Conf::deleteConfigValue('exact-connection/dsn');
         $this->setConnection('first-connection');
         $this->setConnection('second-connection');
-        $obj = $this->getMock();
-        $obj::setConnectionStatic(null);
+        $obj = new TraitClient();
+        $obj::setConnection(null);
 
         // test body
-        $obj::getConnectionStatic($connectionName);
+        $obj::getConnection($connectionName);
     }
 
     /**
@@ -155,9 +154,9 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
     {
         // setup
         $obj = new TraitClient();
-        $obj::setConnectionStatic(new PdoCrudMock());
+        $obj::setConnection(new PdoCrudMock());
 
         // test body and assertions
-        $this->assertInstanceOf(PdoCrudMock::class, $obj::getConnectionStatic('some-connection-wich-does-not-exists'));
+        $this->assertInstanceOf(PdoCrudMock::class, $obj::getConnection('some-connection-wich-does-not-exists'));
     }
 }

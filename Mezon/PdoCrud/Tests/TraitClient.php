@@ -7,7 +7,7 @@ class TraitClient extends TraitClientBase
 {
     public static function getApropriateConnection(): PdoCrud
     {
-        return self::getConnectionStatic([
+        return self::getConnection([
             'default-db-connection',
             'exact-db-connection'
         ]);
