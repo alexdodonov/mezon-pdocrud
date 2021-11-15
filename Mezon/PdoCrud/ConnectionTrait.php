@@ -32,7 +32,7 @@ trait ConnectionTrait
      * @param string $connectionName
      *            connection name
      */
-    protected static function validateDsn(string $connectionName): void
+    private static function validateDsn(string $connectionName): void
     {
         if (Conf::getConfigValueAsString($connectionName . '/dsn') === '') {
             throw (new \Exception($connectionName . '/dsn not set'));
@@ -54,7 +54,7 @@ trait ConnectionTrait
      *            connection name
      * @return bool true if the connection exists, false otherwise
      */
-    protected static function dsnExists(string $connectionName): bool
+    private static function dsnExists(string $connectionName): bool
     {
         try {
             self::validateDsn($connectionName);
@@ -70,7 +70,7 @@ trait ConnectionTrait
      * @return PdoCrud connection object wich is no initialized
      * @codeCoverageIgnore
      */
-    protected static function constructConnection(): PdoCrud
+    private static function constructConnection(): PdoCrud
     {
         return new PdoCrud();
     }

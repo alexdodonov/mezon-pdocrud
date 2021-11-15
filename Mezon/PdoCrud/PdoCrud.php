@@ -66,7 +66,7 @@ class PdoCrud
      *            List of lock modes
      * @return string Query
      */
-    protected function lockQuery(array $tables, array $modes): string
+    private function lockQuery(array $tables, array $modes): string
     {
         $query = [];
 
