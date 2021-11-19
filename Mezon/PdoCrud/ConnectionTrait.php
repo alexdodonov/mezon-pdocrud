@@ -21,7 +21,7 @@ trait ConnectionTrait
 
     /**
      * Connection to DB
-     * 
+     *
      * @var ?PdoCrud
      */
     protected static $crud = null;
@@ -42,7 +42,7 @@ trait ConnectionTrait
             throw (new \Exception($connectionName . '/user not set'));
         }
 
-        if (Conf::getConfigValueAsString($connectionName . '/password') === '') {
+        if (Conf::getConfigValueAsString($connectionName . '/password', 'unexists') === 'unexists') {
             throw (new \Exception($connectionName . '/password not set'));
         }
     }
