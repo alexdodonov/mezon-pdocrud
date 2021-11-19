@@ -114,7 +114,7 @@ trait ConnectionTrait
             }
         }
 
-        throw (new \Exception('Connection with names: "' . implode(', ', $connectionName) . '" were not found'));
+        throw (new \Exception('Connections with names: "' . implode(', ', $connectionName) . '" were not found'));
     }
 
     /**
