@@ -162,7 +162,7 @@ class PdoCrudMock extends PdoCrud
     /**
      * Binded parameters
      *
-     * @var array
+     * @var array<int, array{0: string, 1: mixed, 2: int}>
      */
     public $bindedParameters = [];
 
