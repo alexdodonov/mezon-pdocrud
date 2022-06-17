@@ -152,7 +152,7 @@ class PdoCrudMock extends PdoCrud
 
         $this->selectResults = array_reverse($this->selectResults);
 
-        $return = array_pop($this->selectResults);
+        $return = array_pop($this->selectResults); //TODO use array_shift
 
         $this->selectResults = array_reverse($this->selectResults);
 
