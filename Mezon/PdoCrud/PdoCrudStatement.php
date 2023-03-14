@@ -88,8 +88,9 @@ trait PdoCrudStatement
      *
      * @param ?array $data
      *            query data
-     * @return array query result as an array of objects
+     * @return object[] query result as an array of objects
      * @codeCoverageIgnore
+     * @psalm-suppress MixedReturnTypeCoercion
      */
     public function executeSelect(?array $data = null): array
     {
