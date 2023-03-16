@@ -19,14 +19,21 @@ trait ApropriateConnectionTrait
     use ConnectionTrait;
 
     /**
+     * DSN
+     *
+     * @var array
+     */
+    public static $DSN = [
+        'default-db-connection'
+    ];
+
+    /**
      * Method returns appropriate connections
      *
      * @return PdoCrud connection
      */
     public static function getApropriateConnection(): PdoCrud
     {
-        return self::getConnection([
-            'default-db-connection'
-        ]);
+        return self::getConnection(static::$DSN);
     }
 }

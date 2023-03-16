@@ -35,7 +35,7 @@
 	"scripts": {
 		"test": "php ./vendor/phpunit/phpunit/phpunit",
 		"psalm": "php ./vendor/vimeo/psalm/psalm --show-info=true --no-cache",
-		"infection" : "php ./vendor/infection/infection/bin/infection --min-msi=50",
+		"infection" : "php ./vendor/infection/infection/bin/infection --min-msi=54",
 		"psalm-self": "php ./vendor/vimeo/psalm/psalm --config=psalm-self.xml --show-info=true --no-cache",
 		"test-unit": "php ./vendor/phpunit/phpunit/phpunit --testsuite unit"
 	},
