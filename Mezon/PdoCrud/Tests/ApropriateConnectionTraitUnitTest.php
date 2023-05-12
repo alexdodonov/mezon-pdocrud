@@ -2,6 +2,11 @@
 namespace Mezon\PdoCrud\Tests;
 
 use Mezon\Conf\Conf;
+use Mezon\PdoCrud\Tests\Internal\TraitClient;
+use Mezon\PdoCrud\Tests\Internal\TraitClientBase;
+use Mezon\PdoCrud\Tests\Internal\TraitClientUnexistingDsn;
+use Mezon\PdoCrud\Tests\Internal\ConnectionTraitTests;
+use PHPUnit\Framework\TestCase;
 
 /**
  *
@@ -9,6 +14,26 @@ use Mezon\Conf\Conf;
  */
 class ApropriateConnectionTraitUnitTest extends ConnectionTraitTests
 {
+    
+    /**
+     *
+     * {@inheritdoc}
+     * @see TestCase::setUp()
+     */
+    protected function setUp(): void
+    {
+        Conf::clear();
+    }
+    
+    /**
+     *
+     * {@inheritdoc}
+     * @see \PHPUnit\Framework\TestCase::tearDown()
+     */
+    protected function tearDown(): void
+    {
+        Conf::clear();
+    }
 
     /**
      * Testing method getApropriateConnection

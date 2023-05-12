@@ -1,10 +1,10 @@
 <?php
-namespace Mezon\PdoCrud\Tests;
+namespace Mezon\PdoCrud\Tests\Internal;
 
 use Mezon\PdoCrud\PdoCrud;
 use Mezon\PdoCrud\ApropriateConnectionTrait;
 
-class TraitClientBase
+trait ConstructConnectionTrait
 {
 
     use ApropriateConnectionTrait;
@@ -32,7 +32,7 @@ class TraitClientBase
      * @return PdoCrud connection object wich is no initialized
      * @codeCoverageIgnore
      */
-    protected static function constructConnection(): PdoCrud
+    private static function constructConnection(): PdoCrud
     {
         if (self::$connection === null) {
             throw (new \Exception('Connection was not setup', - 1));

@@ -3,6 +3,8 @@ namespace Mezon\PdoCrud\Tests;
 
 use Mezon\Conf\Conf;
 use PHPUnit\Framework\TestCase;
+use Mezon\PdoCrud\Tests\Internal\TraitClient;
+use Mezon\PdoCrud\Tests\Internal\ConnectionTraitTests;
 
 /**
  *
@@ -17,6 +19,16 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
      * @see TestCase::setUp()
      */
     protected function setUp(): void
+    {
+        Conf::clear();
+    }
+    
+    /**
+     *
+     * {@inheritdoc}
+     * @see \PHPUnit\Framework\TestCase::tearDown()
+     */
+    protected function tearDown(): void
     {
         Conf::clear();
     }
@@ -148,15 +160,17 @@ class ConnectionTraitUnitTest extends ConnectionTraitTests
     }
 
     /**
-     * Testing method cached getConnection
+     * Testing method getConnection wich returns cached value
      */
     public function testGetConnectionCached(): void
     {
         // setup
+        $connection = new PdoCrudMock();
+
         $obj = new TraitClient();
-        $obj::setConnection(new PdoCrudMock());
+        $obj::setConnection($connection);
 
         // test body and assertions
-        $this->assertInstanceOf(PdoCrudMock::class, $obj::getConnection('some-connection-wich-does-not-exists'));
+        $this->assertEquals($connection, $obj::getConnection());
     }
 }

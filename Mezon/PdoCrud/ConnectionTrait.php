@@ -20,11 +20,11 @@ trait ConnectionTrait
 {
 
     /**
-     * Connection to DB
+     * Named connections to DB
      *
-     * @var ?PdoCrud
+     * @var array<string, PdoCrud>
      */
-    protected static $crud = null;
+    protected static $crud = [];
 
     /**
      * Method validates dsn fields
@@ -35,15 +35,15 @@ trait ConnectionTrait
     private static function validateDsn(string $connectionName): void
     {
         if (Conf::getConfigValueAsString($connectionName . '/dsn') === '') {
-            throw (new \Exception($connectionName . '/dsn not set'));
+            throw (new \Exception($connectionName . '/dsn not set', -1));
         }
 
         if (Conf::getConfigValueAsString($connectionName . '/user') === '') {
-            throw (new \Exception($connectionName . '/user not set'));
+            throw (new \Exception($connectionName . '/user not set', -1));
         }
 
         if (Conf::getConfigValueAsString($connectionName . '/password', 'unexists') === 'unexists') {
-            throw (new \Exception($connectionName . '/password not set'));
+            throw (new \Exception($connectionName . '/password not set', -1));
         }
     }
 
@@ -85,18 +85,22 @@ trait ConnectionTrait
      */
     private static function getConnectionScalar(string $connectionName = 'default-db-connection'): PdoCrud
     {
+        if (isset(self::$crud[$connectionName])) {
+            return self::$crud[$connectionName];
+        }
+
         self::validateDsn($connectionName);
 
-        self::$crud = self::constructConnection();
+        self::$crud[$connectionName] = self::constructConnection();
 
-        self::$crud->connect(
+        self::$crud[$connectionName]->connect(
             [
                 'dsn' => Conf::getConfigValueAsString($connectionName . '/dsn'),
                 'user' => Conf::getConfigValueAsString($connectionName . '/user'),
                 'password' => Conf::getConfigValueAsString($connectionName . '/password')
             ]);
 
-        return self::$crud;
+        return self::$crud[$connectionName];
     }
 
     /**
@@ -114,7 +118,7 @@ trait ConnectionTrait
             }
         }
 
-        throw (new \Exception('Connections with names: "' . implode(', ', $connectionName) . '" were not found', -1));
+        throw (new \Exception('Connections with names: "' . implode(', ', $connectionName) . '" were not found', - 1));
     }
 
     /**
@@ -127,17 +131,13 @@ trait ConnectionTrait
      */
     public static function getConnection($connectionName = 'default-db-connection'): PdoCrud
     {
-        if (self::$crud !== null) {
-            return self::$crud;
-        }
-
         if (is_string($connectionName)) {
             return self::getConnectionScalar($connectionName);
         } elseif (is_array($connectionName)) {
             /** @var string[] $connectionName */
             return static::getConnectionForArray($connectionName);
         } else {
-            throw (new \Exception('Unsupported type for connection name'));
+            throw (new \Exception('Unsupported type for connection name', -1));
         }
     }
 
@@ -146,9 +146,15 @@ trait ConnectionTrait
      *
      * @param ?PdoCrud $connection
      *            new connection or it's mock
+     * @param string $connectionName
+     *            connection name
      */
-    public static function setConnection(?PdoCrud $connection): void
+    public static function setConnection(?PdoCrud $connection, string $connectionName = 'default-db-connection'): void
     {
-        self::$crud = $connection;
+        if (null === $connection) {
+            unset(self::$crud[$connectionName]);
+        } else {
+            self::$crud[$connectionName] = $connection;
+        }
     }
 }

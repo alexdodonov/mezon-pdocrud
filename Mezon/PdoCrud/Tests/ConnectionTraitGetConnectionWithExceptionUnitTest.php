@@ -2,6 +2,9 @@
 namespace Mezon\PdoCrud\Tests;
 
 use Mezon\Conf\Conf;
+use Mezon\PdoCrud\Tests\Internal\TraitClient;
+use PHPUnit\Framework\TestCase;
+use Mezon\PdoCrud\Tests\Internal\ConnectionTraitTests;
 
 /**
  *
@@ -9,6 +12,26 @@ use Mezon\Conf\Conf;
  */
 class ConnectionTraitGetConnectionWithExceptionUnitTest extends ConnectionTraitTests
 {
+
+    /**
+     *
+     * {@inheritdoc}
+     * @see TestCase::setUp()
+     */
+    protected function setUp(): void
+    {
+        Conf::clear();
+    }
+
+    /**
+     *
+     * {@inheritdoc}
+     * @see \PHPUnit\Framework\TestCase::tearDown()
+     */
+    protected function tearDown(): void
+    {
+        Conf::clear();
+    }
 
     /**
      * Data provider for the test testGetConnectionException
@@ -26,7 +49,8 @@ class ConnectionTraitGetConnectionWithExceptionUnitTest extends ConnectionTraitT
                     $mock = new TraitClient();
                     $mock::setConnection(null);
                     return $mock;
-                }
+                },
+                'default-db-connection/dsn not set'
             ],
             [
                 function () {
@@ -36,7 +60,8 @@ class ConnectionTraitGetConnectionWithExceptionUnitTest extends ConnectionTraitT
                     $mock = new TraitClient();
                     $mock::setConnection(null);
                     return $mock;
-                }
+                },
+                'default-db-connection/user not set'
             ],
             [
                 function () {
@@ -46,7 +71,8 @@ class ConnectionTraitGetConnectionWithExceptionUnitTest extends ConnectionTraitT
                     $mock = new TraitClient();
                     $mock::setConnection(null);
                     return $mock;
-                }
+                },
+                'default-db-connection/password not set'
             ]
         ];
     }
@@ -56,12 +82,16 @@ class ConnectionTraitGetConnectionWithExceptionUnitTest extends ConnectionTraitT
      *
      * @param callable():TraitClient $setup
      *            setup method
+     * @param string $message
+     *            exception message
      * @dataProvider getConnectionExceptionDataProvider
      */
-    public function testGetConnectionException(callable $setup): void
+    public function testGetConnectionException(callable $setup, string $message): void
     {
         // assertions
         $this->expectException(\Exception::class);
+        $this->expectExceptionCode(- 1);
+        $this->expectExceptionMessage($message);
 
         // setup
         $connection = $setup();

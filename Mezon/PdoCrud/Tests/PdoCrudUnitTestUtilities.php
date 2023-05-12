@@ -1,8 +1,6 @@
 <?php
 namespace Mezon\PdoCrud\Tests;
 
-use Mezon\PdoCrud\PdoCrud;
-
 class PdoCrudUnitTestUtilities
 {
 

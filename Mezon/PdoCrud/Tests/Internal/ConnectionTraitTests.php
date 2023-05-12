@@ -1,5 +1,5 @@
 <?php
-namespace Mezon\PdoCrud\Tests;
+namespace Mezon\PdoCrud\Tests\Internal;
 
 use Mezon\Conf\Conf;
 use PHPUnit\Framework\TestCase;
